@@ -1,10 +1,11 @@
+import {DanceNever} from './Dance/DanceNever'
 import {Duck} from './Duck'
 import {FlyNoWay} from './Fly/FlyNoWay'
 import {SqueakBehavior} from './Quack/SqueakBehavior'
 
 class RubberDuck extends Duck {
 	constructor() {
-		super(new FlyNoWay(), new SqueakBehavior())
+		super(new FlyNoWay(), new SqueakBehavior(), new DanceNever())
 	}
 
 	display(): void {

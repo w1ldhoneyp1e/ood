@@ -9,6 +9,7 @@ function playWithDuck(duck: Duck): void {
 	duck.quack()
 	duck.fly()
 	duck.dance()
+	console.log('\n')
 }
 
 export {
