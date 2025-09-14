@@ -11,10 +11,13 @@ class TestDuck extends Duck {
 }
 
 class MockFlyBehavior implements IFlyBehavior {
+	canFly = false
+	flightCounter = null
 	fly = jest.fn()
 }
 
 class MockQuackBehavior implements IQuackBehavior {
+	quackable = true
 	quack = jest.fn()
 }
 
