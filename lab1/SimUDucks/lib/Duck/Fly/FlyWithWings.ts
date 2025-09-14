@@ -1,7 +1,9 @@
-import {type IFlyBehavior} from './IFlyBehavior'
+import {FlyAbility} from './FlyAbility'
 
-class FlyWithWings implements IFlyBehavior {
+class FlyWithWings extends FlyAbility {
 	fly(): void {
+		this.flightCount++
+		this.sayFlightCount()
 		console.log('I\'m flying with wings!!')
 	}
 }
