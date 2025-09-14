@@ -26,8 +26,12 @@
     "eslint-plugin-sort-exports": "^0.9.1",
     "eslint-plugin-yml": "^1.15.0",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "typescript": "^5",
-    "typescript-eslint": "^8.14.0",
-    "ts-node": "^10.9.2"
+    "typescript-eslint": "^8.14.0"
+  },
+  "dependencies": {
+    "@types/jest": "^30.0.0",
+    "ts-jest": "^29.4.1"
   }
 }
