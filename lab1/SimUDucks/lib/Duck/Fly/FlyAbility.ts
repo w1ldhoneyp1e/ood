@@ -1,13 +1,15 @@
 import {type IFlyBehavior} from './IFlyBehavior'
 
 class FlyAbility implements IFlyBehavior {
-	protected flightCount = 0
+	canFly = true
+	flightCounter = 0
+
 	protected sayFlightCount(): void {
-		console.log(`My ${this.flightCount} flight`)
+		console.log(`My ${this.flightCounter} flight`)
 	}
 
 	fly(): void {
-		this.flightCount++
+		this.flightCounter++
 		this.sayFlightCount()
 	}
 }

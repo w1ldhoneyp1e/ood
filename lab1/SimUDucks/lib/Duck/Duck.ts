@@ -31,7 +31,18 @@ abstract class Duck {
 	}
 
 	fly(): void {
-		this.flyBehavior.fly()
+		const flyness = this.flyBehavior
+
+		flyness.fly()
+
+		if (
+			flyness.canFly
+			&& flyness.flightCounter
+			&& flyness.flightCounter % 2 === 0
+			&& this.quackBehavior.quackable
+		) {
+			this.quackBehavior.quack()
+		}
 	}
 
 	dance(): void {

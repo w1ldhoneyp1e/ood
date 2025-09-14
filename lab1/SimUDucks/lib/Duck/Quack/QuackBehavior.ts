@@ -1,6 +1,6 @@
-import {type IQuackBehavior} from './IQuackBehavior'
+import {QuackAbility} from './QuackAbility'
 
-class QuackBehavior implements IQuackBehavior {
+class QuackBehavior extends QuackAbility {
 	quack(): void {
 		console.log('Quack Quack!!!')
 	}
