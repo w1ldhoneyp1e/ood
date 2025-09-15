@@ -1,13 +1,24 @@
+import {type Counter} from './Counter/Counter'
 import {type IDanceBehavior} from './Dance/IDanceBehavior'
 import {type IFlyBehavior} from './Fly/IFlyBehavior'
+import {FlightGreeting} from './Greeting/FlightGreeting'
+import {type IGreetingBehavior} from './Greeting/IGreetingBehavior'
 import {type IQuackBehavior} from './Quack/IQuackBehavior'
 
 abstract class Duck {
 	private flyBehavior: IFlyBehavior
 	private quackBehavior: IQuackBehavior
 	private danceBehavior: IDanceBehavior
+	private afterflyGreeting: IGreetingBehavior
+	private flightCounter: Counter
 
-	constructor(flyBehavior: IFlyBehavior, quackBehavior: IQuackBehavior, danceBehavior: IDanceBehavior) {
+	constructor(
+		flyBehavior: IFlyBehavior,
+		quackBehavior: IQuackBehavior,
+		danceBehavior: IDanceBehavior,
+		greetingBegavior: IGreetingBehavior,
+		counter: Counter,
+	) {
 		if (!quackBehavior) {
 			throw new Error('quackBehavior is required')
 		}
@@ -17,9 +28,14 @@ abstract class Duck {
 		if (!danceBehavior) {
 			throw new Error('danceBehavior is required')
 		}
+		if (!greetingBegavior) {
+			throw new Error('greetingBegavior is required')
+		}
 		this.quackBehavior = quackBehavior
 		this.flyBehavior = flyBehavior
 		this.danceBehavior = danceBehavior
+		this.afterflyGreeting = greetingBegavior
+		this.flightCounter = counter
 	}
 
 	quack(): void {
@@ -31,18 +47,9 @@ abstract class Duck {
 	}
 
 	fly(): void {
-		const flyness = this.flyBehavior
-
-		flyness.fly()
-
-		if (
-			flyness.canFly
-			&& flyness.flightCounter
-			&& flyness.flightCounter % 2 === 0
-			&& this.quackBehavior.quackable
-		) {
-			this.quackBehavior.quack()
-		}
+		this.flyBehavior.fly()
+		this.flightCounter.increase()
+		this.afterflyGreeting.greeting()
 	}
 
 	dance(): void {

@@ -1,5 +1,4 @@
 interface IQuackBehavior {
-	quackable: boolean,
 	quack: () => void,
 }
 
