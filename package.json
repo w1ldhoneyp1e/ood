@@ -5,6 +5,14 @@
   "repository": "https://github.com/w1ldhoneyp1e/ood.git",
   "author": "kirill.yashmetov <k_yashmetov@mail.ru>",
   "license": "MIT",
+  "workspaces": [
+    "lab1"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
   "devDependencies": {
     "@eslint/compat": "^1.2.4",
     "@eslint/eslintrc": "^3",
@@ -27,14 +35,12 @@
     "eslint-plugin-yml": "^1.15.0",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
-    "typescript": "^5",
+    "typescript": "^5.9.2",
     "typescript-eslint": "^8.14.0"
   },
   "dependencies": {
     "@types/jest": "^30.0.0",
-    "@types/ws": "^8.18.1",
     "ts-jest": "^29.4.1",
-    "tsx": "^4.20.6",
-    "ws": "^8.18.3"
+    "tsx": "^4.20.6"
   }
 }
