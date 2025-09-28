@@ -1,11 +1,8 @@
 import {type IQuackBehavior} from './IQuackBehavior'
 
-const createSqueakBehavior = (): IQuackBehavior => ({
-	quack(): void {
-		console.log('Squeek!!!')
-	},
-	quackable: true,
-})
+const createSqueakBehavior: IQuackBehavior = () => {
+	console.log('Squeek!!!')
+}
 
 export {
 	createSqueakBehavior,

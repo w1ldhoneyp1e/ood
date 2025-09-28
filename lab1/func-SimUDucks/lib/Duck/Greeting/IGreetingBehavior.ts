@@ -1,6 +1,4 @@
-interface IGreetingBehavior {
-	greeting: () => void,
-}
+type IGreetingBehavior = () => void
 
 export {
 	IGreetingBehavior,

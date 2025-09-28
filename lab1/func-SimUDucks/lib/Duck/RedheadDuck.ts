@@ -6,10 +6,10 @@ import {createNoGreetingEver} from './Greeting/NoGreetingEver'
 import {createQuackBehavior} from './Quack/QuackBehavior'
 
 const createRedheadDuck = (): Duck => createDuck({
-	flyBehavior: createFlyWithWings(),
-	quackBehavior: createQuackBehavior(),
-	danceBehavior: createDanceMinuet(),
-	greetingBehavior: createNoGreetingEver(),
+	flyBehavior: createFlyWithWings,
+	quackBehavior: createQuackBehavior,
+	danceBehavior: createDanceMinuet,
+	greetingBehavior: createNoGreetingEver,
 	counter: new Counter(),
 	display: () => {
 		console.log('I\'m a redhead duck')

@@ -1,11 +1,8 @@
 import {type IFlyBehavior} from './IFlyBehavior'
 
-const createFlyWithWings = (): IFlyBehavior => ({
-	fly: () => {
-		console.log('I\'m flying with wings!!')
-	},
-	canFly: true,
-})
+const createFlyWithWings: IFlyBehavior = () => {
+	console.log('I\'m flying with wings!!')
+}
 
 export {
 	createFlyWithWings,

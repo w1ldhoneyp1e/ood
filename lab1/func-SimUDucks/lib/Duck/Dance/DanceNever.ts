@@ -1,8 +1,6 @@
 import {type IDanceBehavior} from './IDanceBehavior'
 
-const createDanceNever = (): IDanceBehavior => ({
-	dance(): void {},
-})
+const createDanceNever: IDanceBehavior = () => {}
 
 export {
 	createDanceNever,

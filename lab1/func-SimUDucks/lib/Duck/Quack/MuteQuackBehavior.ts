@@ -1,9 +1,6 @@
 import {type IQuackBehavior} from './IQuackBehavior'
 
-const createMuteQuackBehavior = (): IQuackBehavior => ({
-	quack(): void {},
-	quackable: false,
-})
+const createMuteQuackBehavior: IQuackBehavior = () => {}
 
 export {
 	createMuteQuackBehavior,

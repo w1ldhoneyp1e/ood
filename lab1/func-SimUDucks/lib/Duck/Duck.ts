@@ -14,12 +14,12 @@ interface Duck {
 }
 
 interface CreateDuckArgs {
-	flyBehavior: IFlyBehavior,
-	quackBehavior: IQuackBehavior,
-	danceBehavior: IDanceBehavior,
-	greetingBehavior: IGreetingBehavior,
-	counter: Counter,
 	display: () => void,
+	flyBehavior?: IFlyBehavior,
+	quackBehavior?: IQuackBehavior,
+	danceBehavior?: IDanceBehavior,
+	greetingBehavior?: IGreetingBehavior,
+	counter?: Counter,
 }
 
 const createDuck = ({
@@ -29,41 +29,38 @@ const createDuck = ({
 	greetingBehavior,
 	counter,
 	display,
-}: CreateDuckArgs): Duck => {
-	if (!quackBehavior) {
-		throw new Error('quackBehavior is required')
-	}
-	if (!flyBehavior) {
-		throw new Error('flyBehavior is required')
-	}
-	if (!danceBehavior) {
-		throw new Error('danceBehavior is required')
-	}
-	if (!greetingBehavior) {
-		throw new Error('greetingBegavior is required')
-	}
+}: CreateDuckArgs): Duck => ({
+	quack(): void {
+		if (quackBehavior) {
+			quackBehavior()
+		}
+	},
+	swim(): void {
+		console.log('I\'m swimming')
+	},
+	fly(): void {
+		if (flyBehavior) {
+			flyBehavior()
 
-	return {
-		quack(): void {
-			quackBehavior.quack()
-		},
-		swim(): void {
-			console.log('I\'m swimming')
-		},
-		fly(): void {
-			flyBehavior.fly()
-			counter.increase()
-			greetingBehavior.greeting()
-		},
-		dance(): void {
-			danceBehavior.dance()
-		},
-		setFlyBehavior(_flyBehavior: IFlyBehavior): void {
-			flyBehavior = _flyBehavior
-		},
-		display,
-	}
-}
+			if (counter) {
+				counter.increase()
+			}
+
+			if (greetingBehavior) {
+				greetingBehavior()
+			}
+		}
+	},
+	dance(): void {
+		if (danceBehavior) {
+			danceBehavior()
+		}
+	},
+	setFlyBehavior(_flyBehavior: IFlyBehavior): void {
+		flyBehavior = _flyBehavior
+	},
+	display,
+})
 
 export {
 	createDuck,

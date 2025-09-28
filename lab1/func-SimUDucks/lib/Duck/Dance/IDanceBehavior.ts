@@ -1,6 +1,4 @@
-interface IDanceBehavior {
-	dance: () => void,
-}
+type IDanceBehavior = () => void
 
 export {
 	IDanceBehavior,

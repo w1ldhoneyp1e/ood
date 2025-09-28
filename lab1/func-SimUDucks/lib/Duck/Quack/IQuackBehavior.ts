@@ -1,7 +1,4 @@
-interface IQuackBehavior {
-	quack: () => void,
-	readonly quackable: boolean,
-}
+type IQuackBehavior = () => void
 
 export {
 	IQuackBehavior,

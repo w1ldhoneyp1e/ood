@@ -1,7 +1,4 @@
-interface IFlyBehavior {
-	fly: () => void,
-	readonly canFly: boolean,
-}
+type IFlyBehavior = () => void
 
 export {
 	IFlyBehavior,

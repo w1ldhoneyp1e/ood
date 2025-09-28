@@ -1,9 +1,6 @@
 import {type IFlyBehavior} from './IFlyBehavior'
 
-const createFlyNoWay = (): IFlyBehavior => ({
-	fly(): void {},
-	canFly: false,
-})
+const createFlyNoWay: IFlyBehavior = () => {}
 
 export {
 	createFlyNoWay,
