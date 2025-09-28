@@ -2,6 +2,11 @@
   "name": "shapes",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "dev": "npx vite",
+    "build": "npx tsc && npx vite build",
+    "preview": "npx vite preview"
+  },
   "dependencies": {
     "vite": "^7.1.7",
     "@types/ws": "^8.18.1",
