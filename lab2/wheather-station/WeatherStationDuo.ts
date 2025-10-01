@@ -35,7 +35,11 @@ class CAdvancedDisplay implements IObserver<SWeatherInfo> {
 	}
 
 	private displayStationData(stationName: string, data: SWeatherInfo): void {
-		console.log(`${stationName}: Temp ${data.temperature}°C, Hum ${data.humidity}, Pressure ${data.pressure}`)
+		console.log(`${stationName}:`)
+		console.log(`Current Temp ${data.temperature}`)
+		console.log(`Current Hum ${data.humidity}`)
+		console.log(`Current Pressure ${data.pressure}`)
+		console.log('----------------')
 	}
 }
 
