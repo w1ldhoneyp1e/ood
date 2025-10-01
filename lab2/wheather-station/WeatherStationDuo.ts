@@ -22,14 +22,20 @@ class CAdvancedDisplay implements IObserver<SWeatherInfo> {
 			this.outData = data
 		}
 
-		if (this.inData && this.outData) {
-			this.displayBothStations()
+		this.displayCurrentData()
+	}
+
+	private displayCurrentData(): void {
+		if (this.inData) {
+			this.displayStationData('Inside', this.inData)
+		}
+		if (this.outData) {
+			this.displayStationData('Outside', this.outData)
 		}
 	}
 
-	private displayBothStations(): void {
-		console.log(`Inside:  Temp ${this.inData!.temperature}°C, Hum ${this.inData!.humidity}, Pressure ${this.inData!.pressure}`)
-		console.log(`Outside: Temp ${this.outData!.temperature}°C, Hum ${this.outData!.humidity}, Pressure ${this.outData!.pressure}`)
+	private displayStationData(stationName: string, data: SWeatherInfo): void {
+		console.log(`${stationName}: Temp ${data.temperature}°C, Hum ${data.humidity}, Pressure ${data.pressure}`)
 	}
 }
 
@@ -46,9 +52,6 @@ class DuoStatsDisplay implements IObserver<SWeatherInfo> {
 		getPressureStatsActions(),
 	]
 
-	private inDataReceived = false
-	private outDataReceived = false
-
 	update(data: SWeatherInfo): void {
 		const actions = data.source === 'in'
 			? this.inActions
@@ -59,24 +62,17 @@ class DuoStatsDisplay implements IObserver<SWeatherInfo> {
 			action.addValue(values[index])
 		})
 
-		if (data.source === 'in') {
-			this.inDataReceived = true
-		}
-		else {
-			this.outDataReceived = true
-		}
-
-		if (this.inDataReceived && this.outDataReceived) {
-			this.displayStats()
-		}
+		this.displayStationStats(
+			data.source === 'in'
+				? 'Inside'
+				: 'Outside',
+			actions,
+		)
 	}
 
-	private displayStats(): void {
-		console.log('Inside')
-		this.inActions.forEach(action => action.printStats())
-
-		console.log('Outside')
-		this.outActions.forEach(action => action.printStats())
+	private displayStationStats(stationName: string, actions: any[]): void {
+		console.log(stationName)
+		actions.forEach(action => action.printStats())
 	}
 }
 
