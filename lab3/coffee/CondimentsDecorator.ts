@@ -103,10 +103,6 @@ class ChocolateCrumbs extends CondimentDecorator {
 		this.mass = mass
 	}
 
-	getCost(): number {
-		return this.beverage.getCost() + 2.0 * this.mass
-	}
-
 	protected getCondimentCost(): number {
 		return 2.0 * this.mass
 	}
@@ -133,6 +129,55 @@ class CoconutFlakes extends CondimentDecorator {
 	}
 }
 
+class Cream extends CondimentDecorator {
+	protected getCondimentCost(): number {
+		return 25
+	}
+
+	protected getCondimentDescription(): string {
+		return 'Cream'
+	}
+}
+
+class Chocolate extends CondimentDecorator {
+	private pieces: number
+
+	constructor(beverage: IBeverage, pieces: number) {
+		super(beverage)
+		this.pieces = Math.min(pieces, 5)
+	}
+
+	protected getCondimentCost(): number {
+		return 10 * this.pieces
+	}
+
+	protected getCondimentDescription(): string {
+		return `${this.pieces} chocolate pieces`
+	}
+}
+
+enum LIQUEUR_TYPE {
+	nut = 'Nut',
+	chocolate = 'Chocolate',
+}
+
+class Liqueur extends CondimentDecorator {
+	private liqueurType: LIQUEUR_TYPE
+
+	constructor(beverage: IBeverage, liqueurType: LIQUEUR_TYPE) {
+		super(beverage)
+		this.liqueurType = liqueurType
+	}
+
+	protected getCondimentCost(): number {
+		return 50
+	}
+
+	protected getCondimentDescription(): string {
+		return `${this.liqueurType} liqueur`
+	}
+}
+
 export {
 	CondimentDecorator,
 	Cinnamon,
@@ -143,4 +188,8 @@ export {
 	SYRUP_TYPE,
 	ChocolateCrumbs,
 	CoconutFlakes,
+	Cream,
+	Chocolate,
+	Liqueur,
+	LIQUEUR_TYPE,
 }

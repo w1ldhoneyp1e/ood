@@ -7,12 +7,17 @@ import {
 	Tea,
 } from './Beverages'
 import {
+	type CondimentDecorator,
+	Chocolate,
 	ChocolateCrumbs,
 	Cinnamon,
 	CoconutFlakes,
+	Cream,
 	ICE_CUBE_TYPE,
 	IceCubes,
 	Lemon,
+	Liqueur,
+	LIQUEUR_TYPE,
 	Syrup,
 	SYRUP_TYPE,
 } from './CondimentsDecorator'
@@ -23,6 +28,7 @@ import {
 	DoubleLatte,
 	LargeMilkshake,
 	MediumMilkshake,
+	SizeDecorator,
 	SmallMilkshake,
 	StandardCappuccino,
 	StandardLatte,
@@ -32,6 +38,7 @@ import {
 	ChamomileTea,
 	EarlGreyTea,
 	GreenTea,
+	TeaVarietyDecorator,
 } from './TeaVarietyDecorator'
 
 async function dialogWithUser(): Promise<void> {
@@ -130,14 +137,18 @@ async function dialogWithUser(): Promise<void> {
 	let condimentChoice: string
 	for (;;) {
 		console.log('Add condiment:')
-		console.log('1 - Lemon (10p each)')
-		console.log('2 - Cinnamon (20p)')
-		console.log('3 - Ice Cubes (5p each)')
-		console.log('4 - Dry Ice Cubes (10p each)')
-		console.log('5 - Chocolate Syrup (15p)')
-		console.log('6 - Maple Syrup (15p)')
-		console.log('7 - Chocolate Crumbs (2p per gram)')
-		console.log('8 - Coconut Flakes (1p per gram)')
+		console.log('1 - Lemon (10₽ each)')
+		console.log('2 - Cinnamon (20₽)')
+		console.log('3 - Ice Cubes (5₽ each)')
+		console.log('4 - Dry Ice Cubes (10₽ each)')
+		console.log('5 - Chocolate Syrup (15₽)')
+		console.log('6 - Maple Syrup (15₽)')
+		console.log('7 - Chocolate Crumbs (2₽ per gram)')
+		console.log('8 - Coconut Flakes (1₽ per gram)')
+		console.log('9 - Cream (25₽)')
+		console.log('10 - Chocolate (10₽ per piece, max 5)')
+		console.log('11 - Nut Liqueur (50₽)')
+		console.log('12 - Chocolate Liqueur (50₽)')
 		console.log('0 - Checkout')
 		condimentChoice = await question('')
 
@@ -186,18 +197,32 @@ async function dialogWithUser(): Promise<void> {
 				beverage = makeCondiment(CoconutFlakes, m)(beverage)
 				break
 			}
+			case '9':
+				beverage = makeCondiment(Cream)(beverage)
+				break
+			case '10': {
+				console.log('How many chocolate pieces?')
+				const pieces = await question('')
+				const p = Math.min(Number(pieces) || 1)
+				beverage = makeCondiment(Chocolate, p)(beverage)
+				break
+			}
+			case '11':
+				beverage = makeCondiment(Liqueur, LIQUEUR_TYPE.nut)(beverage)
+				break
+			case '12':
+				beverage = makeCondiment(Liqueur, LIQUEUR_TYPE.chocolate)(beverage)
+				break
 			case '0':
 				break
 			default:
 				rl.close()
 				return
 		}
-
 		if (condimentChoice === '0') {
 			break
 		}
 	}
-
 
 	console.log(`${beverage.getDescription()}, cost: ${beverage.getCost()}`)
 	rl.close()
