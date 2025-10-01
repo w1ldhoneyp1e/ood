@@ -33,7 +33,7 @@ class CAdvancedDisplay implements IObserver<SWeatherInfo> {
 	}
 }
 
-class CAdvancedStatsDisplay implements IObserver<SWeatherInfo> {
+class DuoStatsDisplay implements IObserver<SWeatherInfo> {
 	private inActions = [
 		getTemperatureStatsActions(),
 		getHumidityStatsActions(),
@@ -168,7 +168,7 @@ class CWeatherStationDuo {
 export {
 	CWeatherStationDuo,
 	CAdvancedDisplay,
-	CAdvancedStatsDisplay,
+	DuoStatsDisplay,
 	CWeatherDataWithSource,
 	type SWeatherInfo,
 }
