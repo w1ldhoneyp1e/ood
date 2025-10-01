@@ -17,7 +17,8 @@ abstract class CObservable<T> implements IObservable<T> {
 
 	notifyObservers(): void {
 		const data = this.getChangedData()
-		this.observers.forEach(observer => {
+		const observersCopy = Array.from(this.observers)
+		observersCopy.forEach(observer => {
 			observer.update(data)
 		})
 	}
