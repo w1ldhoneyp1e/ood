@@ -1,4 +1,7 @@
 import {type IObserver, CObservable} from './Observer'
+import {getHumidityStatsActions} from './stats/averageHumidity'
+import {getPressureStatsActions} from './stats/averagePressure'
+import {getTemperatureStatsActions} from './stats/averageTemperature'
 
 interface SWeatherInfo {
 	temperature: number,
@@ -16,25 +19,18 @@ class CDisplay implements IObserver<SWeatherInfo> {
 }
 
 class CStatsDisplay implements IObserver<SWeatherInfo> {
-	private minTemperature = Infinity
-	private maxTemperature = -Infinity
-	private accTemperature = 0
-	private countAcc = 0
+	private temperatureActions = getTemperatureStatsActions()
+	private humidityActions = getHumidityStatsActions()
+	private pressureActions = getPressureStatsActions()
 
 	update(data: SWeatherInfo): void {
-		if (this.minTemperature > data.temperature) {
-			this.minTemperature = data.temperature
-		}
-		if (this.maxTemperature < data.temperature) {
-			this.maxTemperature = data.temperature
-		}
-		this.accTemperature += data.temperature
-		this.countAcc++
+		this.temperatureActions.addValue(data.temperature)
+		this.humidityActions.addValue(data.humidity)
+		this.pressureActions.addValue(data.pressure)
 
-		console.log(`Max Temp ${this.maxTemperature}`)
-		console.log(`Min Temp ${this.minTemperature}`)
-		console.log(`Average Temp ${(this.accTemperature / this.countAcc)}`)
-		console.log('----------------')
+		this.temperatureActions.printStats()
+		this.humidityActions.printStats()
+		this.pressureActions.printStats()
 	}
 }
 
