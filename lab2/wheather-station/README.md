@@ -1,0 +1,1 @@
+yarn tsx .\lab2\wheather-station\main.ts
