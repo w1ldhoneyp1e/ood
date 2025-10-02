@@ -67,7 +67,7 @@ async function dialogWithUser(): Promise<void> {
 			beverage = new Coffee()
 			break
 		case '2': {
-			console.log('Choose size: 1 - Standard (80₽), 2 - Double (120₽)')
+			console.log('Choose size: 1 - Standard (80p), 2 - Double (120p)')
 			const sizeChoice = await question('')
 			const baseBeverage = new Cappuccino()
 			beverage = sizeChoice === '2'
@@ -76,7 +76,7 @@ async function dialogWithUser(): Promise<void> {
 			break
 		}
 		case '3': {
-			console.log('Choose size: 1 - Standard (90₽), 2 - Double (130₽)')
+			console.log('Choose size: 1 - Standard (90₽), 2 - Double (130p)')
 			const sizeChoice = await question('')
 			const baseBeverage = new Latte()
 			beverage = sizeChoice === '2'
@@ -86,10 +86,10 @@ async function dialogWithUser(): Promise<void> {
 		}
 		case '4': {
 			console.log('Choose tea variety:')
-			console.log('1 - Earl Grey (30₽)')
-			console.log('2 - Green (30₽)')
-			console.log('3 - Chamomile (30₽)')
-			console.log('4 - Black (30₽)')
+			console.log('1 - Earl Grey (30p)')
+			console.log('2 - Green (30p)')
+			console.log('3 - Chamomile (30p)')
+			console.log('4 - Black (30p)')
 			const varietyChoice = await question('')
 			const baseBeverage = new Tea()
 			switch (varietyChoice) {
@@ -110,7 +110,7 @@ async function dialogWithUser(): Promise<void> {
 			break
 		}
 		case '5': {
-			console.log('Choose size: 1 - Small (50₽), 2 - Medium (60₽), 3 - Large (80₽)')
+			console.log('Choose size: 1 - Small (50p), 2 - Medium (60p), 3 - Large (80p)')
 			const sizeChoice = await question('')
 			const baseBeverage = new Milkshake()
 			switch (sizeChoice) {
@@ -137,18 +137,18 @@ async function dialogWithUser(): Promise<void> {
 	let condimentChoice: string
 	for (;;) {
 		console.log('Add condiment:')
-		console.log('1 - Lemon (10₽ each)')
-		console.log('2 - Cinnamon (20₽)')
-		console.log('3 - Ice Cubes (5₽ each)')
-		console.log('4 - Dry Ice Cubes (10₽ each)')
-		console.log('5 - Chocolate Syrup (15₽)')
-		console.log('6 - Maple Syrup (15₽)')
-		console.log('7 - Chocolate Crumbs (2₽ per gram)')
-		console.log('8 - Coconut Flakes (1₽ per gram)')
-		console.log('9 - Cream (25₽)')
-		console.log('10 - Chocolate (10₽ per piece, max 5)')
-		console.log('11 - Nut Liqueur (50₽)')
-		console.log('12 - Chocolate Liqueur (50₽)')
+		console.log('1 - Lemon (10p each)')
+		console.log('2 - Cinnamon (20p)')
+		console.log('3 - Ice Cubes (5p each)')
+		console.log('4 - Dry Ice Cubes (10p each)')
+		console.log('5 - Chocolate Syrup (15p)')
+		console.log('6 - Maple Syrup (15p)')
+		console.log('7 - Chocolate Crumbs (2p per gram)')
+		console.log('8 - Coconut Flakes (1p per gram)')
+		console.log('9 - Cream (25p)')
+		console.log('10 - Chocolate (10p per piece, max 5)')
+		console.log('11 - Nut Liqueur (50p)')
+		console.log('12 - Chocolate Liqueur (50p)')
 		console.log('0 - Checkout')
 		condimentChoice = await question('')
 

@@ -1,4 +1,8 @@
-import {type CondimentDecorator, Lemon} from './CondimentsDecorator'
+import {
+	type CondimentDecorator,
+	Cinnamon,
+	Lemon,
+} from './CondimentsDecorator'
 import {type IBeverage} from './IBeverage'
 
 class MakeLemon {
@@ -13,9 +17,9 @@ class MakeLemon {
 	}
 }
 
-// function makeCinnamon(): (beverage: IBeverage) => Cinnamon {
-// 	return (beverage: IBeverage) => new Cinnamon(beverage)
-// }
+function makeCinnamon(): (beverage: IBeverage) => Cinnamon {
+	return (beverage: IBeverage) => new Cinnamon(beverage)
+}
 
 function makeCondiment<T extends CondimentDecorator>(
 	condimentClass: new (beverage: IBeverage, ...args: any[]) => T,
@@ -34,5 +38,6 @@ function decorate<T extends CondimentDecorator>(
 export {
 	MakeLemon,
 	makeCondiment,
+	makeCinnamon,
 	decorate,
 }
