@@ -46,6 +46,29 @@ describe('priority order', () => {
 		wd.setMeasurements(1, 0.5, 750)
 		expect(count).toBe(1)
 	})
+
+	test('observers with same priority', () => {
+		const wd = new CWeatherData()
+		const calls: string[] = []
+
+		const mockObserver = (name: string): IObserver<WeatherInfo> => ({
+			update: () => {
+				calls.push(name)
+			},
+		})
+
+		const first = mockObserver('first')
+		const second = mockObserver('second')
+		const third = mockObserver('third')
+
+		wd.registerObserver(first, 5)
+		wd.registerObserver(second, 5)
+		wd.registerObserver(third, 5)
+
+		wd.setMeasurements(1, 0.5, 750)
+
+		expect(calls).toEqual(['first', 'second', 'third'])
+	})
 })
 
 
