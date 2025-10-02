@@ -10,6 +10,8 @@ interface IObservable<T> {
 
 abstract class CObservable<T> implements IObservable<T> {
 	private observerToPriority = new Map<IObserver<T>, number>()
+	// Тесты для обсерверов в одном бакете. Какой первый вернется?
+	// [x] - Добавил тест. Возвращается в порядке регистрации.
 	private priorityToObservers = new Map<number, Set<IObserver<T>>>()
 
 	registerObserver(observer: IObserver<T>, priority: number = 0): void {
