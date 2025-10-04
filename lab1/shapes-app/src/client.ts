@@ -30,11 +30,6 @@ function executeCommand(): void {
 		const result = app.processInput(command)
 		addOutput(result)
 
-		const commandLower = command.toLowerCase()
-		if (commandLower.startsWith('drawpicture') || commandLower.startsWith('drawshape')) {
-			app.render()
-		}
-
 		commandInput.value = ''
 	}
 	catch (error) {

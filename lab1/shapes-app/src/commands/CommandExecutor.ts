@@ -1,9 +1,13 @@
+import {type ICanvas} from '../canvas/ICanvas'
 import {type Picture} from '../canvas/Picture'
 import {createShape} from '../shapes/ShapeFactory'
 import {type CommandType} from './parseCommand'
 
 class CommandExecutor {
-	constructor(private picture: Picture) {}
+	constructor(
+		private picture: Picture,
+		private canvas?: ICanvas,
+	) {}
 
 	execute(command: CommandType): string {
 		try {
@@ -155,10 +159,18 @@ class CommandExecutor {
 			throw new Error(`Shape '${id}' not found`)
 		}
 
+		if (this.canvas) {
+			shape.draw(this.canvas)
+		}
+
 		return `Drawing shape '${id}'`
 	}
 
 	private drawPicture(): string {
+		if (this.canvas) {
+			this.picture.draw(this.canvas)
+		}
+
 		return 'Drawing all shapes'
 	}
 }
