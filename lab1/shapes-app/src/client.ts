@@ -1,9 +1,9 @@
 import {ShapesApp} from './app'
 
 const canvasElement = document.getElementById('canvas') as HTMLCanvasElement
-const commandInput = document.getElementById('commandInput') as HTMLInputElement
-const executeBtn = document.getElementById('executeBtn') as HTMLButtonElement
-const clearBtn = document.getElementById('clearBtn') as HTMLButtonElement
+const commandInput = document.getElementById('command-input') as HTMLInputElement
+const executeButton = document.getElementById('execute-button') as HTMLButtonElement
+const clearButton = document.getElementById('clear-button') as HTMLButtonElement
 const outputDiv = document.getElementById('output') as HTMLDivElement
 
 const ctx = canvasElement.getContext('2d')
@@ -47,9 +47,9 @@ function clearCanvas(): void {
 	addOutput('Canvas cleared')
 }
 
-executeBtn.addEventListener('click', executeCommand)
+executeButton.addEventListener('click', executeCommand)
 
-clearBtn.addEventListener('click', clearCanvas)
+clearButton.addEventListener('click', clearCanvas)
 
 commandInput.addEventListener('keypress', event => {
 	if (event.key === 'Enter') {
