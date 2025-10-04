@@ -1,47 +1,60 @@
 import {ShapesApp} from './app'
 
 const canvasElement = document.getElementById('canvas') as HTMLCanvasElement
+const commandInput = document.getElementById('commandInput') as HTMLInputElement
+const executeBtn = document.getElementById('executeBtn') as HTMLButtonElement
+const clearBtn = document.getElementById('clearBtn') as HTMLButtonElement
+const outputDiv = document.getElementById('output') as HTMLDivElement
 
 const ctx = canvasElement.getContext('2d')
 if (!ctx) {
-	throw new Error('Приехали')
+	throw new Error('Failed to get canvas context')
 }
 
 const app = new ShapesApp(ctx)
 
-const WS_PORT = 3000
-const socket = new WebSocket(`ws://localhost:${WS_PORT}`)
-
-socket.onopen = () => {
-	console.log('Client connected')
+function addOutput(text: string): void {
+	outputDiv.textContent += `${text}\n`
+	outputDiv.scrollTop = outputDiv.scrollHeight
 }
 
-socket.onclose = () => {
-	console.warn('Client disconnected')
-}
+function executeCommand(): void {
+	const command = commandInput.value.trim()
+	if (!command) {
+		return
+	}
 
-socket.onerror = error => {
-	console.error('WS Error:', error)
-}
+	addOutput(command)
 
-socket.onmessage = event => {
 	try {
-		const message = JSON.parse(event.data)
+		const result = app.processInput(command)
+		addOutput(result)
 
-		if (message.type === 'status') {
+		const commandLower = command.toLowerCase()
+		if (commandLower.startsWith('drawpicture') || commandLower.startsWith('drawshape')) {
+			app.render()
 		}
 
-		else if (message.type === 'output') {
-			if (message.originalInput) {
-				const inputLower = message.originalInput.toLowerCase()
-
-				if (inputLower.startsWith('drawpicture') || inputLower.startsWith('drawshape')) {
-					app.render()
-				}
-			}
-		}
+		commandInput.value = ''
 	}
-	catch (e) {
-		console.error('Failed to parse:', event.data, e)
+	catch (error) {
+		addOutput(`Error: ${error}`)
 	}
 }
+
+function clearCanvas(): void {
+	ctx?.clearRect(0, 0, canvasElement.width, canvasElement.height)
+	addOutput('Canvas cleared')
+}
+
+executeBtn.addEventListener('click', executeCommand)
+
+clearBtn.addEventListener('click', clearCanvas)
+
+commandInput.addEventListener('keypress', event => {
+	if (event.key === 'Enter') {
+		executeCommand()
+	}
+})
+
+commandInput.focus()

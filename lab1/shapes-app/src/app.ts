@@ -39,8 +39,6 @@ class ShapesApp {
 			return
 		}
 
-		this.ctx?.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
-
 		if (this.pendingDraw) {
 			if (this.pendingDraw.type === 'shape' && this.pendingDraw.id) {
 				const shape = this.picture.getShape(this.pendingDraw.id)
@@ -63,4 +61,3 @@ class ShapesApp {
 export {
 	ShapesApp,
 }
-

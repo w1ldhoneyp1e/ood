@@ -3,12 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "npx vite",
-    "server": "npx tsx server/server.ts"
+    "dev": "npx vite"
   },
   "dependencies": {
-    "vite": "^7.1.7",
-    "@types/ws": "^8.18.1",
-    "ws": "^8.18.3"
+    "vite": "^7.1.7"
   }
 }
