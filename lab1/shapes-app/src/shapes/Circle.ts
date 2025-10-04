@@ -1,9 +1,10 @@
 import {type ICanvas} from '../canvas/ICanvas'
+import {type Color} from '../Color'
 import {Shape} from './Shape'
 
 interface CircleConstructorArgs {
 	id: string,
-	color: string,
+	color: Color,
 	x: number,
 	y: number,
 	radius: number,

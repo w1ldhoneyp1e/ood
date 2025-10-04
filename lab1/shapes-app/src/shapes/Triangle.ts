@@ -1,9 +1,10 @@
 import {type ICanvas} from '../canvas/ICanvas'
+import {type Color} from '../Color'
 import {Shape} from './Shape'
 
 interface TriangleConstructorArgs {
 	id: string,
-	color: string,
+	color: Color,
 	x1: number,
 	y1: number,
 	x2: number,

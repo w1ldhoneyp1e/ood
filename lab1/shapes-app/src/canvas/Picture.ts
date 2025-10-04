@@ -1,3 +1,4 @@
+import {Color} from '../Color'
 import {type Shape} from '../shapes/Shape'
 import {createShape} from '../shapes/ShapeFactory'
 
@@ -41,7 +42,7 @@ class Picture {
 	listShapes(): string[] {
 		return this.order.map((id, index) => {
 			const shape = this.shapes.get(id)!
-			return `${index + 1} ${shape.constructor.name.toLowerCase()} ${shape.id} ${shape.color} ${shape.getDescription()}`
+			return `${index + 1} ${shape.constructor.name.toLowerCase()} ${shape.id} ${shape.color.toString()} ${shape.getDescription()}`
 		})
 	}
 
@@ -50,7 +51,7 @@ class Picture {
 		if (!shape) {
 			throw new Error(`Shape with id '${id}' not found`)
 		}
-		shape.color = color
+		shape.color = new Color(color)
 	}
 
 	changeShape(id: string, type: string, params: (number | string)[]): void {
@@ -62,7 +63,7 @@ class Picture {
 		const newShape = createShape({
 			type,
 			id,
-			color: oldShape.color,
+			color: oldShape.color.toString(),
 			params,
 		})
 		this.shapes.set(id, newShape)

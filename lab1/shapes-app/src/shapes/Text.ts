@@ -1,9 +1,10 @@
 import {type ICanvas} from '../canvas/ICanvas'
+import {type Color} from '../Color'
 import {Shape} from './Shape'
 
 interface TextContructorArgs {
 	id: string,
-	color: string,
+	color: Color,
 	left: number,
 	top: number,
 	fontSize: number,

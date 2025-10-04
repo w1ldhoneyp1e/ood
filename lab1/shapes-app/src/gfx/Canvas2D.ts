@@ -1,11 +1,12 @@
 import {type ICanvas} from '../canvas/ICanvas'
+import {type Color} from '../Color'
 
 class Canvas2D implements ICanvas {
 	constructor(private ctx: CanvasRenderingContext2D) {}
 
-	setColor(color: string): void {
-		this.ctx.strokeStyle = color
-		this.ctx.fillStyle = color
+	setColor(color: Color): void {
+		this.ctx.strokeStyle = color.toString()
+		this.ctx.fillStyle = color.toString()
 	}
 
 	moveTo(x: number, y: number): void {
