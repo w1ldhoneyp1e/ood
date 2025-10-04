@@ -2,8 +2,15 @@ import * as readline from 'readline'
 import {
 	Cappuccino,
 	Coffee,
+	DoubleCappuccino,
+	DoubleLatte,
+	LargeMilkshake,
 	Latte,
+	MediumMilkshake,
 	Milkshake,
+	SmallMilkshake,
+	StandardCappuccino,
+	StandardLatte,
 	Tea,
 } from './Beverages'
 import {
@@ -23,16 +30,6 @@ import {
 } from './CondimentsDecorator'
 import {makeCondiment} from './decoratorUtils'
 import {type IBeverage} from './IBeverage'
-import {
-	DoubleCappuccino,
-	DoubleLatte,
-	LargeMilkshake,
-	MediumMilkshake,
-	SizeDecorator,
-	SmallMilkshake,
-	StandardCappuccino,
-	StandardLatte,
-} from './SizeDecorators'
 import {
 	BlackTea,
 	ChamomileTea,
@@ -69,19 +66,17 @@ async function dialogWithUser(): Promise<void> {
 		case '2': {
 			console.log('Choose size: 1 - Standard (80p), 2 - Double (120p)')
 			const sizeChoice = await question('')
-			const baseBeverage = new Cappuccino()
 			beverage = sizeChoice === '2'
-				? new DoubleCappuccino(baseBeverage)
-				: new StandardCappuccino(baseBeverage)
+				? new DoubleCappuccino()
+				: new StandardCappuccino()
 			break
 		}
 		case '3': {
-			console.log('Choose size: 1 - Standard (90₽), 2 - Double (130p)')
+			console.log('Choose size: 1 - Standard (90p), 2 - Double (130p)')
 			const sizeChoice = await question('')
-			const baseBeverage = new Latte()
 			beverage = sizeChoice === '2'
-				? new DoubleLatte(baseBeverage)
-				: new StandardLatte(baseBeverage)
+				? new DoubleLatte()
+				: new StandardLatte()
 			break
 		}
 		case '4': {
@@ -112,19 +107,18 @@ async function dialogWithUser(): Promise<void> {
 		case '5': {
 			console.log('Choose size: 1 - Small (50p), 2 - Medium (60p), 3 - Large (80p)')
 			const sizeChoice = await question('')
-			const baseBeverage = new Milkshake()
 			switch (sizeChoice) {
 				case '1':
-					beverage = new SmallMilkshake(baseBeverage)
+					beverage = new SmallMilkshake()
 					break
 				case '2':
-					beverage = new MediumMilkshake(baseBeverage)
+					beverage = new MediumMilkshake()
 					break
 				case '3':
-					beverage = new LargeMilkshake(baseBeverage)
+					beverage = new LargeMilkshake()
 					break
 				default:
-					beverage = new MediumMilkshake(baseBeverage)
+					beverage = new MediumMilkshake()
 					break
 			}
 			break
