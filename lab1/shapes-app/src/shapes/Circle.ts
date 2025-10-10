@@ -45,6 +45,13 @@ class Circle extends Shape {
 	getDescription(): string {
 		return `circle ${this.x} ${this.y} ${this.radius}`
 	}
+
+	clone(newId: string): Circle {
+		return new Circle({
+			...this,
+			id: newId,
+		})
+	}
 }
 
 export {

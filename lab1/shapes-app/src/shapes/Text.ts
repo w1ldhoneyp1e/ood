@@ -50,6 +50,13 @@ class Text extends Shape {
 	getDescription(): string {
 		return `text ${this.left} ${this.top} ${this.fontSize} ${this.text}`
 	}
+
+	clone(newId: string): Text {
+		return new Text({
+			...this,
+			id: newId,
+		})
+	}
 }
 
 export {

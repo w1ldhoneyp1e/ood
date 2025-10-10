@@ -54,6 +54,13 @@ class Rectangle extends Shape {
 	getDescription(): string {
 		return `rectangle ${this.left} ${this.top} ${this.width} ${this.height}`
 	}
+
+	clone(newId: string): Rectangle {
+		return new Rectangle({
+			...this,
+			id: newId,
+		})
+	}
 }
 
 export {

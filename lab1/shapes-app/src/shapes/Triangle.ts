@@ -61,6 +61,13 @@ class Triangle extends Shape {
 	getDescription(): string {
 		return `triangle ${this.x1} ${this.y1} ${this.x2} ${this.y2} ${this.x3} ${this.y3}`
 	}
+
+	clone(newId: string): Triangle {
+		return new Triangle({
+			...this,
+			id: newId,
+		})
+	}
 }
 
 export {

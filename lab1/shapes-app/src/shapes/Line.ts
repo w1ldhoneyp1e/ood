@@ -49,6 +49,13 @@ class Line extends Shape {
 	getDescription(): string {
 		return `line ${this.x1} ${this.y1} ${this.x2} ${this.y2}`
 	}
+
+	clone(newId: string): Line {
+		return new Line({
+			...this,
+			id: newId,
+		})
+	}
 }
 
 export {

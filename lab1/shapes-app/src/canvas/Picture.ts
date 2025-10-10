@@ -68,6 +68,32 @@ class Picture {
 		})
 		this.shapes.set(id, newShape)
 	}
+
+	cloneShape(id: string, newId: string): void {
+		const originalShape = this.getShape(id)
+		if (!originalShape) {
+			throw new Error(`Shape with id '${id}' not found`)
+		}
+
+		if (this.shapes.has(newId)) {
+			throw new Error(`Shape with id '${newId}' already exists`)
+		}
+
+		const clonedShape = originalShape.clone(newId)
+		this.addShape(clonedShape)
+	}
+
+	// clone(): Picture {
+	// 	const clonedPicture = new Picture()
+
+	// 	this.order.forEach(id => {
+	// 		const shape = this.shapes.get(id)!
+	// 		const clonedShape = shape.clone(id)
+	// 		clonedPicture.addShape(clonedShape)
+	// 	})
+
+	// 	return clonedPicture
+	// }
 }
 
 export {

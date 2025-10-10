@@ -10,6 +10,7 @@ abstract class Shape {
 	abstract draw(canvas: ICanvas): void
 	abstract move(dx: number, dy: number): void
 	abstract getDescription(): string
+	abstract clone(newId: string): Shape
 }
 
 export {

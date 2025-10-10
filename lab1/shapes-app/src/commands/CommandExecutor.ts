@@ -39,6 +39,9 @@ class CommandExecutor {
 				case 'DrawPicture':
 					return this.drawPicture()
 
+				case 'CloneShape':
+					return this.cloneShape(command.args)
+
 				default:
 					return `Unknown command: ${command}`
 			}
@@ -172,6 +175,18 @@ class CommandExecutor {
 		}
 
 		return 'Drawing all shapes'
+	}
+
+	private cloneShape(args: string[]): string {
+		if (args.length !== 2) {
+			throw new Error('CloneShape requires 2 arguments')
+		}
+
+		const id = args[0]
+		const newId = args[1]
+
+		this.picture.cloneShape(id, newId)
+		return `Shape '${id}' cloned as '${newId}'`
 	}
 }
 
