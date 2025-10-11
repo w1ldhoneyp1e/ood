@@ -288,7 +288,7 @@ describe('Picture', () => {
 			const newShape = picture.getShape('c1')
 			expect(newShape).not.toBe(circle)
 			expect(newShape?.constructor.name).toBe('Rectangle')
-			expect(newShape?.color).toBe(red)
+			expect(newShape?.color.toString()).toBe(red.toString())
 		})
 
 		test('non-existent shape', () => {
@@ -312,7 +312,7 @@ describe('Picture', () => {
 			const clone = picture.getShape('c2')
 			expect(clone).not.toBe(circle)
 			expect(clone?.id).toBe('c2')
-			expect(clone?.color).toBe(red)
+			expect(clone?.color.toString()).toBe(red.toString())
 			expect((clone as Circle).x).toBe(100)
 			expect((clone as Circle).y).toBe(100)
 			expect((clone as Circle).radius).toBe(50)
