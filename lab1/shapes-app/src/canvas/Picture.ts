@@ -69,6 +69,7 @@ class Picture {
 		this.shapes.set(id, newShape)
 	}
 
+	// clone возвращает id
 	cloneShape(id: string, newId: string): void {
 		const originalShape = this.getShape(id)
 		if (!originalShape) {
