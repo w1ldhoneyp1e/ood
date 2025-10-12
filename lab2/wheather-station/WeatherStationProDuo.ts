@@ -9,7 +9,6 @@ interface BasicWeatherInfo {
 	temperature: number,
 	humidity: number,
 	pressure: number,
-	source: 'in',
 }
 
 interface ProWeatherInfo {
@@ -18,7 +17,6 @@ interface ProWeatherInfo {
 	pressure: number,
 	windSpeed: number,
 	windDirection: number,
-	source: 'out',
 }
 
 type WeatherInfoDuo = BasicWeatherInfo | ProWeatherInfo
@@ -39,31 +37,20 @@ interface ProMeasurements {
 
 class ProDuoDisplay implements IObserver<WeatherInfoDuo> {
 	update(data: WeatherInfoDuo): void {
-		if (data.source === 'in') {
-			this.displayBasicData('Inside', data)
+		this.displayWeatherData(data)
+	}
+
+	private displayWeatherData(data: WeatherInfoDuo): void {
+		console.log(`Current Temp ${data.temperature}`)
+		console.log(`Current Hum ${data.humidity}`)
+		console.log(`Current Pressure ${data.pressure}`)
+
+		if ('windSpeed' in data && 'windDirection' in data) {
+			const windDirectionName = this.getWindDirectionName(data.windDirection)
+			console.log(`Current Wind: ${data.windSpeed} m/s from ${windDirectionName} (${data.windDirection}°)`)
 		}
-		else {
-			this.displayProData('Outside', data)
-		}
-	}
 
-	private displayBasicData(stationName: string, data: BasicWeatherInfo): void {
-		this.displayCommonData(stationName, data.temperature, data.humidity, data.pressure)
 		console.log('----------------')
-	}
-
-	private displayProData(stationName: string, data: ProWeatherInfo): void {
-		this.displayCommonData(stationName, data.temperature, data.humidity, data.pressure)
-		const windDirectionName = this.getWindDirectionName(data.windDirection)
-		console.log(`Current Wind: ${data.windSpeed} m/s from ${windDirectionName} (${data.windDirection}°)`)
-		console.log('----------------')
-	}
-
-	private displayCommonData(stationName: string, temperature: number, humidity: number, pressure: number): void {
-		console.log(`${stationName}:`)
-		console.log(`Current Temp ${temperature}`)
-		console.log(`Current Hum ${humidity}`)
-		console.log(`Current Pressure ${pressure}`)
 	}
 
 	private getWindDirectionName(degrees: number): string {
@@ -106,40 +93,29 @@ class ProDuoDisplay implements IObserver<WeatherInfoDuo> {
 }
 
 class ProDuoStatsDisplay implements IObserver<WeatherInfoDuo> {
-	private inTemperatureActions = getTemperatureStatsActions()
-	private inHumidityActions = getHumidityStatsActions()
-	private inPressureActions = getPressureStatsActions()
-
-	private outTemperatureActions = getTemperatureStatsActions()
-	private outHumidityActions = getHumidityStatsActions()
-	private outPressureActions = getPressureStatsActions()
-	private outWindSpeedActions = getWindSpeedStatsActions()
-	private outWindDirectionActions = getWindDirectionStatsActions()
+	private temperatureActions = getTemperatureStatsActions()
+	private humidityActions = getHumidityStatsActions()
+	private pressureActions = getPressureStatsActions()
+	private windSpeedActions = getWindSpeedStatsActions()
+	private windDirectionActions = getWindDirectionStatsActions()
 
 	update(data: WeatherInfoDuo): void {
-		if (data.source === 'in') {
-			this.inTemperatureActions.addValue(data.temperature)
-			this.inHumidityActions.addValue(data.humidity)
-			this.inPressureActions.addValue(data.pressure)
+		this.temperatureActions.addValue(data.temperature)
+		this.humidityActions.addValue(data.humidity)
+		this.pressureActions.addValue(data.pressure)
 
-			console.log('Inside Stats:')
-			this.inTemperatureActions.printStats()
-			this.inHumidityActions.printStats()
-			this.inPressureActions.printStats()
+		if ('windSpeed' in data && 'windDirection' in data) {
+			this.windSpeedActions.addValue(data.windSpeed)
+			this.windDirectionActions.addValue(data.windDirection)
 		}
-		else {
-			this.outTemperatureActions.addValue(data.temperature)
-			this.outHumidityActions.addValue(data.humidity)
-			this.outPressureActions.addValue(data.pressure)
-			this.outWindSpeedActions.addValue(data.windSpeed)
-			this.outWindDirectionActions.addValue(data.windDirection)
 
-			console.log('Outside Stats:')
-			this.outTemperatureActions.printStats()
-			this.outHumidityActions.printStats()
-			this.outPressureActions.printStats()
-			this.outWindSpeedActions.printStats()
-			this.outWindDirectionActions.printStats()
+		this.temperatureActions.printStats()
+		this.humidityActions.printStats()
+		this.pressureActions.printStats()
+
+		if ('windSpeed' in data && 'windDirection' in data) {
+			this.windSpeedActions.printStats()
+			this.windDirectionActions.printStats()
 		}
 	}
 }
@@ -178,7 +154,6 @@ class CWeatherDataBasic extends CObservable<BasicWeatherInfo> {
 			temperature: this.getTemperature(),
 			humidity: this.getHumidity(),
 			pressure: this.getPressure(),
-			source: 'in',
 		}
 	}
 }
@@ -231,7 +206,6 @@ class CWeatherDataPro extends CObservable<ProWeatherInfo> {
 			pressure: this.getPressure(),
 			windSpeed: this.getWindSpeed(),
 			windDirection: this.getWindDirection(),
-			source: 'out',
 		}
 	}
 }
