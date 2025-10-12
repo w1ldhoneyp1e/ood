@@ -1,9 +1,9 @@
-import {type IObserver, CObservable} from './Observer'
-import {getHumidityStatsActions} from './stats/averageHumidity'
-import {getPressureStatsActions} from './stats/averagePressure'
-import {getTemperatureStatsActions} from './stats/averageTemperature'
-import {getWindDirectionStatsActions} from './stats/averageWindDirectionOnly'
-import {getWindSpeedStatsActions} from './stats/averageWindSpeed'
+import {type IObserver, CObservable} from '../observer/Observer'
+import {getHumidityStatsActions} from '../stats/averageHumidity'
+import {getPressureStatsActions} from '../stats/averagePressure'
+import {getTemperatureStatsActions} from '../stats/averageTemperature'
+import {getWindDirectionStatsActions} from '../stats/averageWindDirectionOnly'
+import {getWindSpeedStatsActions} from '../stats/averageWindSpeed'
 
 interface BasicWeatherInfo {
 	temperature: number,

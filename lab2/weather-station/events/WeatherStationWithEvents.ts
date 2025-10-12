@@ -72,7 +72,6 @@ class WeatherStationWithEvents extends EventObservable<WeatherEvent> {
 			data: {
 				value,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}
@@ -83,7 +82,6 @@ class WeatherStationWithEvents extends EventObservable<WeatherEvent> {
 			data: {
 				value,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}
@@ -94,7 +92,6 @@ class WeatherStationWithEvents extends EventObservable<WeatherEvent> {
 			data: {
 				value,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}
@@ -105,7 +102,6 @@ class WeatherStationWithEvents extends EventObservable<WeatherEvent> {
 			data: {
 				value,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}
@@ -116,7 +112,6 @@ class WeatherStationWithEvents extends EventObservable<WeatherEvent> {
 			data: {
 				value,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}
@@ -131,7 +126,10 @@ class WeatherStationWithEvents extends EventObservable<WeatherEvent> {
 }
 
 class FishingDisplay implements IEventObserver<WeatherEvent> {
-	private interestedEventTypes = [WEATHER_EVENT_TYPE.temperature, WEATHER_EVENT_TYPE.pressure]
+	private interestedEventTypes = [
+		WEATHER_EVENT_TYPE.temperature,
+		WEATHER_EVENT_TYPE.pressure,
+	]
 
 	update(event: WeatherEvent): void {
 		switch (event.type) {
@@ -150,26 +148,10 @@ class FishingDisplay implements IEventObserver<WeatherEvent> {
 
 	private displayTemperature(value: number): void {
 		console.log(`Temperature: ${value}°C`)
-
-		if (value < -10) {
-			console.log('Critical temperature! Stop fishing!')
-		}
-		else if (value < 0) {
-			console.log('Very cold, be careful!')
-		}
-		console.log('---')
 	}
 
 	private displayPressure(value: number): void {
 		console.log(`Pressure: ${value} mmHg`)
-
-		if (value < 750) {
-			console.log('Low pressure - fish may be less active')
-		}
-		else if (value > 770) {
-			console.log('High pressure - good fishing conditions')
-		}
-		console.log('---')
 	}
 }
 

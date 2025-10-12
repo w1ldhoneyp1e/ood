@@ -17,7 +17,6 @@ interface AnimalEvent extends IEvent {
 	data: {
 		animalId: string,
 		location?: string,
-		intensity?: number,
 	},
 }
 
@@ -35,7 +34,7 @@ class AnimalSystem extends EventObservable<AnimalEvent> {
 		console.log(`${type} ${id} registered in ${location}`)
 	}
 
-	catMeow(catId: string, intensity: number = 1): void {
+	catMeow(catId: string): void {
 		const cat = this.animals.get(catId)
 		if (!cat || cat.type !== 'cat') {
 			console.log(`Cat ${catId} not found`)
@@ -47,14 +46,12 @@ class AnimalSystem extends EventObservable<AnimalEvent> {
 			data: {
 				animalId: catId,
 				location: cat.location,
-				intensity,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}
 
-	catPurr(catId: string, intensity: number = 1): void {
+	catPurr(catId: string): void {
 		const cat = this.animals.get(catId)
 		if (!cat || cat.type !== 'cat') {
 			console.log(`Cat ${catId} not found`)
@@ -66,14 +63,12 @@ class AnimalSystem extends EventObservable<AnimalEvent> {
 			data: {
 				animalId: catId,
 				location: cat.location,
-				intensity,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}
 
-	mouseSqueak(mouseId: string, intensity: number = 1): void {
+	mouseSqueak(mouseId: string): void {
 		const mouse = this.animals.get(mouseId)
 		if (!mouse || mouse.type !== 'mouse') {
 			console.log(`Mouse ${mouseId} not found`)
@@ -85,9 +80,7 @@ class AnimalSystem extends EventObservable<AnimalEvent> {
 			data: {
 				animalId: mouseId,
 				location: mouse.location,
-				intensity,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}
@@ -105,12 +98,11 @@ class AnimalSystem extends EventObservable<AnimalEvent> {
 				animalId: mouseId,
 				location: mouse.location,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}
 
-	dogBark(dogId: string, intensity: number = 1): void {
+	dogBark(dogId: string): void {
 		const dog = this.animals.get(dogId)
 		if (!dog || dog.type !== 'dog') {
 			console.log(`Dog ${dogId} not found`)
@@ -122,14 +114,12 @@ class AnimalSystem extends EventObservable<AnimalEvent> {
 			data: {
 				animalId: dogId,
 				location: dog.location,
-				intensity,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}
 
-	dogWagTail(dogId: string, intensity: number = 1): void {
+	dogWagTail(dogId: string): void {
 		const dog = this.animals.get(dogId)
 		if (!dog || dog.type !== 'dog') {
 			console.log(`Dog ${dogId} not found`)
@@ -141,9 +131,7 @@ class AnimalSystem extends EventObservable<AnimalEvent> {
 			data: {
 				animalId: dogId,
 				location: dog.location,
-				intensity,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}
@@ -155,20 +143,17 @@ class AnimalSystem extends EventObservable<AnimalEvent> {
 				animalId: 'system',
 				location,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}
 
-	predatorNear(location: string, intensity: number = 1): void {
+	predatorNear(location: string): void {
 		const event: AnimalEvent = {
 			type: ANIMAL_EVENT_TYPE.predatorNear,
 			data: {
 				animalId: 'system',
 				location,
-				intensity,
 			},
-			timestamp: Date.now(),
 		}
 		this.notifyObservers(event)
 	}

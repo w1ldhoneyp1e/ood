@@ -1,16 +1,19 @@
 import {
+	type EventTypeMap,
 	type IEvent,
 	type IEventObservable,
 	type IEventObserver,
+	type ObserverInfo,
+	type ObserverToEventTypesMap,
 } from './EventTypes'
 
 
 abstract class EventObservable<T extends IEvent = IEvent> implements IEventObservable<T> {
-	private eventTypeToPriorityToObservers = new Map<string, Map<number, Set<IEventObserver<T>>>>()
-	private observerToEventTypesToPriority = new Map<IEventObserver<T>, Map<string, number>>()
+	private eventMap: EventTypeMap<T> = new Map()
+	private observerMap: ObserverToEventTypesMap<T> = new Map()
 
 	registerObserver(observer: IEventObserver<T>, eventTypes: string[], priority: number = 0): void {
-		const existingEventTypes = this.observerToEventTypesToPriority.get(observer)
+		const existingEventTypes = this.observerMap.get(observer)
 		if (existingEventTypes) {
 			for (const eventType of eventTypes) {
 				if (existingEventTypes.has(eventType)) {
@@ -21,10 +24,10 @@ abstract class EventObservable<T extends IEvent = IEvent> implements IEventObser
 		}
 
 		for (const eventType of eventTypes) {
-			let priorityMap = this.eventTypeToPriorityToObservers.get(eventType)
+			let priorityMap = this.eventMap.get(eventType)
 			if (!priorityMap) {
 				priorityMap = new Map<number, Set<IEventObserver<T>>>()
-				this.eventTypeToPriorityToObservers.set(eventType, priorityMap)
+				this.eventMap.set(eventType, priorityMap)
 			}
 
 			let observerSet = priorityMap.get(priority)
@@ -35,15 +38,15 @@ abstract class EventObservable<T extends IEvent = IEvent> implements IEventObser
 
 			observerSet.add(observer)
 
-			if (!this.observerToEventTypesToPriority.has(observer)) {
-				this.observerToEventTypesToPriority.set(observer, new Map<string, number>())
+			if (!this.observerMap.has(observer)) {
+				this.observerMap.set(observer, new Map<string, number>())
 			}
-			this.observerToEventTypesToPriority.get(observer)!.set(eventType, priority)
+			this.observerMap.get(observer)!.set(eventType, priority)
 		}
 	}
 
 	unregisterObserver(observer: IEventObserver<T>, eventTypes?: string[]): void {
-		const observerEventTypes = this.observerToEventTypesToPriority.get(observer)
+		const observerEventTypes = this.observerMap.get(observer)
 		if (!observerEventTypes) {
 			return
 		}
@@ -55,7 +58,7 @@ abstract class EventObservable<T extends IEvent = IEvent> implements IEventObser
 		}
 
 		if (observerEventTypes.size === 0) {
-			this.observerToEventTypesToPriority.delete(observer)
+			this.observerMap.delete(observer)
 		}
 	}
 
@@ -69,7 +72,7 @@ abstract class EventObservable<T extends IEvent = IEvent> implements IEventObser
 			return
 		}
 
-		const priorityMap = this.eventTypeToPriorityToObservers.get(eventType)
+		const priorityMap = this.eventMap.get(eventType)
 		if (!priorityMap) {
 			return
 		}
@@ -83,7 +86,7 @@ abstract class EventObservable<T extends IEvent = IEvent> implements IEventObser
 		if (observerSet.size === 0) {
 			priorityMap.delete(priority)
 			if (priorityMap.size === 0) {
-				this.eventTypeToPriorityToObservers.delete(eventType)
+				this.eventMap.delete(eventType)
 			}
 		}
 
@@ -91,7 +94,7 @@ abstract class EventObservable<T extends IEvent = IEvent> implements IEventObser
 	}
 
 	notifyObservers(event: T): void {
-		const priorityMap = this.eventTypeToPriorityToObservers.get(event.type)
+		const priorityMap = this.eventMap.get(event.type)
 		if (!priorityMap) {
 			return
 		}
@@ -109,40 +112,6 @@ abstract class EventObservable<T extends IEvent = IEvent> implements IEventObser
 				observer.update(event)
 			})
 		}
-	}
-
-	getObserverInfo(observer: IEventObserver<T>): {
-		eventTypes: string[],
-		priorities: Map<string, number>,
-	} | null {
-		const eventTypesMap = this.observerToEventTypesToPriority.get(observer)
-		if (!eventTypesMap) {
-			return null
-		}
-
-		return {
-			eventTypes: Array.from(eventTypesMap.keys()),
-			priorities: new Map(eventTypesMap),
-		}
-	}
-
-	getObserversForEventType(eventType: string): IEventObserver<T>[] {
-		const priorityMap = this.eventTypeToPriorityToObservers.get(eventType)
-		if (!priorityMap) {
-			return []
-		}
-
-		const observers: IEventObserver<T>[] = []
-		const priorities = Array.from(priorityMap.keys()).sort((a, b) => b - a)
-
-		for (const priority of priorities) {
-			const observerSet = priorityMap.get(priority)
-			if (observerSet) {
-				observers.push(...Array.from(observerSet))
-			}
-		}
-
-		return observers
 	}
 }
 

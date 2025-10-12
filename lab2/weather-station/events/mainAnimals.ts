@@ -4,11 +4,10 @@ import {
 	CatObserver,
 	DogObserver,
 	MouseObserver,
-} from './AnimalExample'
-
+} from './Animals'
 
 function main(): void {
-	console.log('Animal system demonstration\n')
+	console.log('Animal system demonstration')
 
 	const animalSystem = new AnimalSystem()
 
@@ -19,7 +18,7 @@ function main(): void {
 	animalSystem.registerAnimal('rex', 'dog', 'yard')
 	animalSystem.registerAnimal('buddy', 'dog', 'living_room')
 
-	console.log('\nCreating observers...')
+	console.log('Creating observers')
 
 	const catObserver1 = new CatObserver('fluffy')
 	const catObserver2 = new CatObserver('whiskers')
@@ -28,7 +27,7 @@ function main(): void {
 	const dogObserver1 = new DogObserver('rex')
 	const dogObserver2 = new DogObserver('buddy')
 
-	console.log('\nRegistering observers with different priorities...')
+	console.log('Registering observers with different priorities')
 
 	animalSystem.registerObserver(catObserver1, [
 		ANIMAL_EVENT_TYPE.mouseSqueak,
@@ -63,45 +62,15 @@ function main(): void {
 		ANIMAL_EVENT_TYPE.foodAvailable,
 	], 2)
 
-	console.log('\nStarting event simulation...\n')
-
-	console.log('Mouse tiny squeaking in basement:')
-	animalSystem.mouseSqueak('tiny', 2)
-
-	console.log('\nCat fluffy meowing in living room:')
-	animalSystem.catMeow('fluffy', 3)
-
-	console.log('\nFood appears in kitchen:')
+	animalSystem.mouseSqueak('tiny')
+	animalSystem.catMeow('fluffy')
 	animalSystem.foodAvailable('kitchen')
-
-	console.log('\nDog rex barking in yard:')
-	animalSystem.dogBark('rex', 4)
-
-	console.log('\nPredator appears near attic:')
-	animalSystem.predatorNear('attic', 5)
-
-	console.log('\nCat whiskers purring in kitchen:')
-	animalSystem.catPurr('whiskers', 2)
-
-	console.log('\nSubscription information:')
-	const cat1Info = animalSystem.getObserverInfo(catObserver1)
-	const mouse1Info = animalSystem.getObserverInfo(mouseObserver1)
-	const dog1Info = animalSystem.getObserverInfo(dogObserver1)
-
-	console.log('Cat fluffy subscribed to:', cat1Info?.eventTypes)
-	console.log('Mouse tiny subscribed to:', mouse1Info?.eventTypes)
-	console.log('Dog rex subscribed to:', dog1Info?.eventTypes)
-
-	console.log('\nUnsubscribing cat fluffy from dog events...')
+	animalSystem.dogBark('rex')
+	animalSystem.predatorNear('attic')
+	animalSystem.catPurr('whiskers')
 	animalSystem.unregisterObserver(catObserver1, [ANIMAL_EVENT_TYPE.dogBark])
-
-	console.log('\nDog buddy barking in living room (cat fluffy no longer reacts):')
-	animalSystem.dogBark('buddy', 3)
-
-	console.log('\nMouse squeaky squeaking in attic (cat fluffy still reacts):')
-	animalSystem.mouseSqueak('squeaky', 1)
-
-	console.log('\nDemonstration completed!')
+	animalSystem.dogBark('buddy')
+	animalSystem.mouseSqueak('squeaky')
 }
 
 main()
