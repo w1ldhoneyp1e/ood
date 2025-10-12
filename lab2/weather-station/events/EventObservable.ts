@@ -4,27 +4,22 @@ import {
 	type IEventObserver,
 } from './EventTypes'
 
-// Универсальная базовая реализация наблюдаемого с поддержкой типов событий
-export abstract class CEventObservable<T extends IEvent = IEvent> implements IEventObservable<T> {
-	// Map: eventType -> priority -> Set<observers>
+
+abstract class EventObservable<T extends IEvent = IEvent> implements IEventObservable<T> {
 	private eventTypeToPriorityToObservers = new Map<string, Map<number, Set<IEventObserver<T>>>>()
-	// Map: observer -> Set<eventTypes> -> priority
 	private observerToEventTypesToPriority = new Map<IEventObserver<T>, Map<string, number>>()
 
 	registerObserver(observer: IEventObserver<T>, eventTypes: string[], priority: number = 0): void {
-		// Проверяем, не зарегистрирован ли уже этот наблюдатель на эти типы событий
 		const existingEventTypes = this.observerToEventTypesToPriority.get(observer)
 		if (existingEventTypes) {
-			// Проверяем пересечения
 			for (const eventType of eventTypes) {
 				if (existingEventTypes.has(eventType)) {
-					console.warn(`Observer already registered for event type: ${eventType}`)
+					console.log(`Observer already registered for event type: ${eventType}`)
 					continue
 				}
 			}
 		}
 
-		// Регистрируем наблюдателя для каждого типа события
 		for (const eventType of eventTypes) {
 			let priorityMap = this.eventTypeToPriorityToObservers.get(eventType)
 			if (!priorityMap) {
@@ -40,7 +35,6 @@ export abstract class CEventObservable<T extends IEvent = IEvent> implements IEv
 
 			observerSet.add(observer)
 
-			// Сохраняем связь observer -> eventType -> priority
 			if (!this.observerToEventTypesToPriority.has(observer)) {
 				this.observerToEventTypesToPriority.set(observer, new Map<string, number>())
 			}
@@ -54,36 +48,46 @@ export abstract class CEventObservable<T extends IEvent = IEvent> implements IEv
 			return
 		}
 
-		// Если не указаны конкретные типы событий, отписываем от всех
 		const typesToUnregister = eventTypes || Array.from(observerEventTypes.keys())
 
 		for (const eventType of typesToUnregister) {
-			const priority = observerEventTypes.get(eventType)
-			if (priority === undefined) {
-				continue
-			}
-
-			const priorityMap = this.eventTypeToPriorityToObservers.get(eventType)
-			if (priorityMap) {
-				const observerSet = priorityMap.get(priority)
-				if (observerSet) {
-					observerSet.delete(observer)
-					if (observerSet.size === 0) {
-						priorityMap.delete(priority)
-						if (priorityMap.size === 0) {
-							this.eventTypeToPriorityToObservers.delete(eventType)
-						}
-					}
-				}
-			}
-
-			observerEventTypes.delete(eventType)
+			this.removeObserverFromEventType(observer, eventType, observerEventTypes)
 		}
 
-		// Если у наблюдателя больше нет подписок, удаляем его полностью
 		if (observerEventTypes.size === 0) {
 			this.observerToEventTypesToPriority.delete(observer)
 		}
+	}
+
+	private removeObserverFromEventType(
+		observer: IEventObserver<T>,
+		eventType: string,
+		observerEventTypes: Map<string, number>,
+	): void {
+		const priority = observerEventTypes.get(eventType)
+		if (priority === undefined) {
+			return
+		}
+
+		const priorityMap = this.eventTypeToPriorityToObservers.get(eventType)
+		if (!priorityMap) {
+			return
+		}
+
+		const observerSet = priorityMap.get(priority)
+		if (!observerSet) {
+			return
+		}
+
+		observerSet.delete(observer)
+		if (observerSet.size === 0) {
+			priorityMap.delete(priority)
+			if (priorityMap.size === 0) {
+				this.eventTypeToPriorityToObservers.delete(eventType)
+			}
+		}
+
+		observerEventTypes.delete(eventType)
 	}
 
 	notifyObservers(event: T): void {
@@ -92,7 +96,6 @@ export abstract class CEventObservable<T extends IEvent = IEvent> implements IEv
 			return
 		}
 
-		// Сортируем приоритеты по убыванию (высший приоритет первым)
 		const priorities = Array.from(priorityMap.keys()).sort((a, b) => b - a)
 
 		for (const priority of priorities) {
@@ -101,7 +104,6 @@ export abstract class CEventObservable<T extends IEvent = IEvent> implements IEv
 				continue
 			}
 
-			// Создаем копию множества для безопасной итерации
 			const observersCopy = Array.from(observerSet)
 			observersCopy.forEach(observer => {
 				observer.update(event)
@@ -109,7 +111,6 @@ export abstract class CEventObservable<T extends IEvent = IEvent> implements IEv
 		}
 	}
 
-	// Вспомогательный метод для получения информации о подписках
 	getObserverInfo(observer: IEventObserver<T>): {
 		eventTypes: string[],
 		priorities: Map<string, number>,
@@ -125,7 +126,6 @@ export abstract class CEventObservable<T extends IEvent = IEvent> implements IEv
 		}
 	}
 
-	// Вспомогательный метод для получения всех наблюдателей определенного типа события
 	getObserversForEventType(eventType: string): IEventObserver<T>[] {
 		const priorityMap = this.eventTypeToPriorityToObservers.get(eventType)
 		if (!priorityMap) {
@@ -144,4 +144,8 @@ export abstract class CEventObservable<T extends IEvent = IEvent> implements IEv
 
 		return observers
 	}
+}
+
+export {
+	EventObservable,
 }

@@ -1,4 +1,4 @@
-import {type IObserver} from '../Observer'
+import {type IObserver} from '../observer/Observer'
 import {type SWeatherInfo, CWeatherStationDuo} from '../WeatherStationDuo'
 
 describe('Weather Station Duo', () => {

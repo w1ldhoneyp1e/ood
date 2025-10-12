@@ -1,21 +1,19 @@
-import {CEventObservable} from './EventObservable'
+import {EventObservable} from './EventObservable'
 import {type IEvent, type IEventObserver} from './EventTypes'
 
-// Типы событий для животных
-export enum AnimalEventType {
-	CAT_MEOW = 'cat_meow',
-	CAT_PURR = 'cat_purr',
-	MOUSE_SQUEAK = 'mouse_squeak',
-	MOUSE_HIDE = 'mouse_hide',
-	DOG_BARK = 'dog_bark',
-	DOG_WAG_TAIL = 'dog_wag_tail',
-	FOOD_AVAILABLE = 'food_available',
-	PREDATOR_NEAR = 'predator_near',
+enum ANIMAL_EVENT_TYPE {
+	catMeow = 'cat_meow',
+	catPurr = 'cat_purr',
+	mouseSqueak = 'mouse_squeak',
+	mouseHide = 'mouse_hide',
+	dogBark = 'dog_bark',
+	dogWagTail = 'dog_wag_tail',
+	foodAvailable = 'food_available',
+	predatorNear = 'predator_near',
 }
 
-// События животных
-export interface AnimalEvent extends IEvent {
-	type: AnimalEventType,
+interface AnimalEvent extends IEvent {
+	type: ANIMAL_EVENT_TYPE,
 	data: {
 		animalId: string,
 		location?: string,
@@ -23,32 +21,29 @@ export interface AnimalEvent extends IEvent {
 	},
 }
 
-// Универсальная система животных
-class CAnimalSystem extends CEventObservable<AnimalEvent> {
+class AnimalSystem extends EventObservable<AnimalEvent> {
 	private animals = new Map<string, {
 		type: string,
 		location: string,
 	}>()
 
-	// Регистрация животного в системе
 	registerAnimal(id: string, type: string, location: string): void {
 		this.animals.set(id, {
 			type,
 			location,
 		})
-		console.log(`🐾 ${type} ${id} зарегистрирован в системе в локации ${location}`)
+		console.log(`${type} ${id} registered in ${location}`)
 	}
 
-	// Кот мяукает
 	catMeow(catId: string, intensity: number = 1): void {
 		const cat = this.animals.get(catId)
 		if (!cat || cat.type !== 'cat') {
-			console.log(`❌ Кот ${catId} не найден в системе`)
+			console.log(`Cat ${catId} not found`)
 			return
 		}
 
 		const event: AnimalEvent = {
-			type: AnimalEventType.CAT_MEOW,
+			type: ANIMAL_EVENT_TYPE.catMeow,
 			data: {
 				animalId: catId,
 				location: cat.location,
@@ -59,16 +54,15 @@ class CAnimalSystem extends CEventObservable<AnimalEvent> {
 		this.notifyObservers(event)
 	}
 
-	// Кот мурлычет
 	catPurr(catId: string, intensity: number = 1): void {
 		const cat = this.animals.get(catId)
 		if (!cat || cat.type !== 'cat') {
-			console.log(`❌ Кот ${catId} не найден в системе`)
+			console.log(`Cat ${catId} not found`)
 			return
 		}
 
 		const event: AnimalEvent = {
-			type: AnimalEventType.CAT_PURR,
+			type: ANIMAL_EVENT_TYPE.catPurr,
 			data: {
 				animalId: catId,
 				location: cat.location,
@@ -79,16 +73,15 @@ class CAnimalSystem extends CEventObservable<AnimalEvent> {
 		this.notifyObservers(event)
 	}
 
-	// Мышь пищит
 	mouseSqueak(mouseId: string, intensity: number = 1): void {
 		const mouse = this.animals.get(mouseId)
 		if (!mouse || mouse.type !== 'mouse') {
-			console.log(`❌ Мышь ${mouseId} не найдена в системе`)
+			console.log(`Mouse ${mouseId} not found`)
 			return
 		}
 
 		const event: AnimalEvent = {
-			type: AnimalEventType.MOUSE_SQUEAK,
+			type: ANIMAL_EVENT_TYPE.mouseSqueak,
 			data: {
 				animalId: mouseId,
 				location: mouse.location,
@@ -99,16 +92,15 @@ class CAnimalSystem extends CEventObservable<AnimalEvent> {
 		this.notifyObservers(event)
 	}
 
-	// Мышь прячется
 	mouseHide(mouseId: string): void {
 		const mouse = this.animals.get(mouseId)
 		if (!mouse || mouse.type !== 'mouse') {
-			console.log(`❌ Мышь ${mouseId} не найдена в системе`)
+			console.log(`Mouse ${mouseId} not found`)
 			return
 		}
 
 		const event: AnimalEvent = {
-			type: AnimalEventType.MOUSE_HIDE,
+			type: ANIMAL_EVENT_TYPE.mouseHide,
 			data: {
 				animalId: mouseId,
 				location: mouse.location,
@@ -118,16 +110,15 @@ class CAnimalSystem extends CEventObservable<AnimalEvent> {
 		this.notifyObservers(event)
 	}
 
-	// Собака лает
 	dogBark(dogId: string, intensity: number = 1): void {
 		const dog = this.animals.get(dogId)
 		if (!dog || dog.type !== 'dog') {
-			console.log(`❌ Собака ${dogId} не найдена в системе`)
+			console.log(`Dog ${dogId} not found`)
 			return
 		}
 
 		const event: AnimalEvent = {
-			type: AnimalEventType.DOG_BARK,
+			type: ANIMAL_EVENT_TYPE.dogBark,
 			data: {
 				animalId: dogId,
 				location: dog.location,
@@ -138,16 +129,15 @@ class CAnimalSystem extends CEventObservable<AnimalEvent> {
 		this.notifyObservers(event)
 	}
 
-	// Собака виляет хвостом
 	dogWagTail(dogId: string, intensity: number = 1): void {
 		const dog = this.animals.get(dogId)
 		if (!dog || dog.type !== 'dog') {
-			console.log(`❌ Собака ${dogId} не найдена в системе`)
+			console.log(`Dog ${dogId} not found`)
 			return
 		}
 
 		const event: AnimalEvent = {
-			type: AnimalEventType.DOG_WAG_TAIL,
+			type: ANIMAL_EVENT_TYPE.dogWagTail,
 			data: {
 				animalId: dogId,
 				location: dog.location,
@@ -158,10 +148,9 @@ class CAnimalSystem extends CEventObservable<AnimalEvent> {
 		this.notifyObservers(event)
 	}
 
-	// Еда доступна
 	foodAvailable(location: string): void {
 		const event: AnimalEvent = {
-			type: AnimalEventType.FOOD_AVAILABLE,
+			type: ANIMAL_EVENT_TYPE.foodAvailable,
 			data: {
 				animalId: 'system',
 				location,
@@ -171,10 +160,9 @@ class CAnimalSystem extends CEventObservable<AnimalEvent> {
 		this.notifyObservers(event)
 	}
 
-	// Хищник рядом
 	predatorNear(location: string, intensity: number = 1): void {
 		const event: AnimalEvent = {
-			type: AnimalEventType.PREDATOR_NEAR,
+			type: ANIMAL_EVENT_TYPE.predatorNear,
 			data: {
 				animalId: 'system',
 				location,
@@ -186,28 +174,27 @@ class CAnimalSystem extends CEventObservable<AnimalEvent> {
 	}
 }
 
-// Наблюдатель-кот
 class CatObserver implements IEventObserver<AnimalEvent> {
 	private interestedEventTypes = [
-		AnimalEventType.MOUSE_SQUEAK,
-		AnimalEventType.FOOD_AVAILABLE,
-		AnimalEventType.DOG_BARK,
+		ANIMAL_EVENT_TYPE.mouseSqueak,
+		ANIMAL_EVENT_TYPE.foodAvailable,
+		ANIMAL_EVENT_TYPE.dogBark,
 	]
 
 	constructor(private catId: string) {}
 
 	update(event: AnimalEvent): void {
 		switch (event.type) {
-			case AnimalEventType.MOUSE_SQUEAK:
-				console.log(`🐱 Кот ${this.catId}: "Мяу! Слышу мышь в ${event.data.location}!"`)
+			case ANIMAL_EVENT_TYPE.mouseSqueak:
+				console.log(`Cat ${this.catId}: Mouse in ${event.data.location}`)
 				break
-			case AnimalEventType.FOOD_AVAILABLE:
+			case ANIMAL_EVENT_TYPE.foodAvailable:
 				if (event.data.location === 'kitchen') {
-					console.log(`🐱 Кот ${this.catId}: "Мяу-мяу! Еда на кухне!"`)
+					console.log(`Cat ${this.catId}: Food in kitchen`)
 				}
 				break
-			case AnimalEventType.DOG_BARK:
-				console.log(`🐱 Кот ${this.catId}: "Шшш! Собака лает, лучше спрятаться..."`)
+			case ANIMAL_EVENT_TYPE.dogBark:
+				console.log(`Cat ${this.catId}: Dog barking, hiding`)
 				break
 		}
 	}
@@ -217,26 +204,25 @@ class CatObserver implements IEventObserver<AnimalEvent> {
 	}
 }
 
-// Наблюдатель-мышь
 class MouseObserver implements IEventObserver<AnimalEvent> {
 	private interestedEventTypes = [
-		AnimalEventType.CAT_MEOW,
-		AnimalEventType.DOG_BARK,
-		AnimalEventType.PREDATOR_NEAR,
+		ANIMAL_EVENT_TYPE.catMeow,
+		ANIMAL_EVENT_TYPE.dogBark,
+		ANIMAL_EVENT_TYPE.predatorNear,
 	]
 
 	constructor(private mouseId: string) {}
 
 	update(event: AnimalEvent): void {
 		switch (event.type) {
-			case AnimalEventType.CAT_MEOW:
-				console.log(`🐭 Мышь ${this.mouseId}: "Пи-пи! Кот рядом! Прячусь!"`)
+			case ANIMAL_EVENT_TYPE.catMeow:
+				console.log(`Mouse ${this.mouseId}: Cat nearby, hiding`)
 				break
-			case AnimalEventType.DOG_BARK:
-				console.log(`🐭 Мышь ${this.mouseId}: "Пи! Собака лает, но это не так страшно..."`)
+			case ANIMAL_EVENT_TYPE.dogBark:
+				console.log(`Mouse ${this.mouseId}: Dog barking, not scared`)
 				break
-			case AnimalEventType.PREDATOR_NEAR:
-				console.log(`🐭 Мышь ${this.mouseId}: "ПИ-ПИ-ПИ! Хищник рядом! СРОЧНО ПРЯЧУСЬ!"`)
+			case ANIMAL_EVENT_TYPE.predatorNear:
+				console.log(`Mouse ${this.mouseId}: Predator nearby, hiding!`)
 				break
 		}
 	}
@@ -246,26 +232,25 @@ class MouseObserver implements IEventObserver<AnimalEvent> {
 	}
 }
 
-// Наблюдатель-собака
 class DogObserver implements IEventObserver<AnimalEvent> {
 	private interestedEventTypes = [
-		AnimalEventType.CAT_MEOW,
-		AnimalEventType.MOUSE_SQUEAK,
-		AnimalEventType.FOOD_AVAILABLE,
+		ANIMAL_EVENT_TYPE.catMeow,
+		ANIMAL_EVENT_TYPE.mouseSqueak,
+		ANIMAL_EVENT_TYPE.foodAvailable,
 	]
 
 	constructor(private dogId: string) {}
 
 	update(event: AnimalEvent): void {
 		switch (event.type) {
-			case AnimalEventType.CAT_MEOW:
-				console.log(`🐕 Собака ${this.dogId}: "Гав-гав! Кот мяукает, иду разбираться!"`)
+			case ANIMAL_EVENT_TYPE.catMeow:
+				console.log(`Dog ${this.dogId}: Cat meowing, investigating`)
 				break
-			case AnimalEventType.MOUSE_SQUEAK:
-				console.log(`🐕 Собака ${this.dogId}: "Гав! Мышь пищит, но меня это не очень интересует..."`)
+			case ANIMAL_EVENT_TYPE.mouseSqueak:
+				console.log(`Dog ${this.dogId}: Mouse squeaking, not interested`)
 				break
-			case AnimalEventType.FOOD_AVAILABLE:
-				console.log(`🐕 Собака ${this.dogId}: "ГАВ-ГАВ! Еда! Бегу к миске!"`)
+			case ANIMAL_EVENT_TYPE.foodAvailable:
+				console.log(`Dog ${this.dogId}: Food available, running to bowl`)
 				break
 		}
 	}
@@ -276,7 +261,9 @@ class DogObserver implements IEventObserver<AnimalEvent> {
 }
 
 export {
-	CAnimalSystem,
+	ANIMAL_EVENT_TYPE,
+	AnimalEvent,
+	AnimalSystem,
 	CatObserver,
 	MouseObserver,
 	DogObserver,

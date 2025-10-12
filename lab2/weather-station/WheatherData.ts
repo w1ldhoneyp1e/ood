@@ -1,4 +1,4 @@
-import {type IObserver, CObservable} from './Observer'
+import {type IObserver, CObservable} from './observer/Observer'
 import {getHumidityStatsActions} from './stats/averageHumidity'
 import {getPressureStatsActions} from './stats/averagePressure'
 import {getTemperatureStatsActions} from './stats/averageTemperature'
