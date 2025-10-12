@@ -1,8 +1,6 @@
-import {
-	CWeatherDataPro,
-	ProDisplay,
-	ProStatsDisplay,
-} from './WeatherStationPro'
+import {CWeatherDataPro} from '../proDuo/WeatherStationProDuo'
+import {ProDisplay, ProStatsDisplay} from './WeatherStationPro'
+
 
 function main(): void {
 	const wd = new CWeatherDataPro()
