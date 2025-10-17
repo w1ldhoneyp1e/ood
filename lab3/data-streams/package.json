@@ -1,0 +1,22 @@
+{
+  "name": "data-streams",
+  "version": "1.0.0",
+  "description": "Потоки данных",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/transform.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "transform": "ts-node src/transform.ts",
+    "lint": "eslint src/**/*.ts"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.5.0"
+  },
+  "dependencies": {
+    "seedrandom": "^3.0.5"
+  }
+}
+
