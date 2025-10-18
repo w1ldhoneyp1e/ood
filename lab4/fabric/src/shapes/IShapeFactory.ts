@@ -1,3 +1,5 @@
+/* eslint-disable max-params */
+/* eslint-disable @stylistic/max-len */
 import {type Circle} from './Circle'
 import {type Ellipse} from './Ellipse'
 import {type Line} from './Line'

@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 import {Color} from '../Color'
 import {Circle} from './Circle'
 import {Ellipse} from './Ellipse'
