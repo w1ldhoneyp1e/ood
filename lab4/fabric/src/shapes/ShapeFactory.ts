@@ -10,146 +10,85 @@ import {Text} from './Text'
 import {Triangle} from './Triangle'
 
 class ShapeFactory implements IShapeFactory {
-	createShape(description: string): Shape {
-		const parts = description.trim().split(/\s+/)
+	createRectangle(colorStr: string, left: number, top: number, right: number, bottom: number): Rectangle {
+		const color = new Color(colorStr)
+		return new Rectangle({
+			color,
+			left,
+			top,
+			right,
+			bottom,
+		})
+	}
 
-		if (parts.length < 2) {
-			throw new Error('Invalid shape description: too few parameters')
-		}
+	createTriangle(colorStr: string, x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): Triangle {
+		const color = new Color(colorStr)
+		return new Triangle({
+			color,
+			x1,
+			y1,
+			x2,
+			y2,
+			x3,
+			y3,
+		})
+	}
 
-		const shapeType = parts[0].toLowerCase()
-		const colorStr = parts[1]
+	createEllipse(colorStr: string, cx: number, cy: number, rx: number, ry: number): Ellipse {
+		const color = new Color(colorStr)
+		return new Ellipse({
+			color,
+			cx,
+			cy,
+			rx,
+			ry,
+		})
+	}
 
-		try {
-			const color = new Color(colorStr)
+	createPolygon(colorStr: string, cx: number, cy: number, radius: number, vertexCount: number): RegularPolygon {
+		const color = new Color(colorStr)
+		return new RegularPolygon({
+			color,
+			cx,
+			cy,
+			radius,
+			vertexCount,
+		})
+	}
 
-			switch (shapeType) {
-				case 'rectangle': {
-					if (parts.length !== 6) {
-						throw new Error('Rectangle requires 4 coordinates: left top right bottom')
-					}
-					const [, , left, top, right, bottom] = parts.map((p, i) => i < 2
-						? p
-						: parseFloat(p))
-					return new Rectangle({
-						color,
-						left: left as number,
-						top: top as number,
-						right: right as number,
-						bottom: bottom as number,
-					})
-				}
+	createCircle(colorStr: string, cx: number, cy: number, radius: number): Circle {
+		const color = new Color(colorStr)
+		return new Circle({
+			color,
+			cx,
+			cy,
+			radius,
+		})
+	}
 
-				case 'triangle': {
-					if (parts.length !== 8) {
-						throw new Error('Triangle requires 3 vertices: x1 y1 x2 y2 x3 y3')
-					}
-					const [, , x1, y1, x2, y2, x3, y3] = parts.map((p, i) => i < 2
-						? p
-						: parseFloat(p))
-					return new Triangle({
-						color,
-						x1: x1 as number,
-						y1: y1 as number,
-						x2: x2 as number,
-						y2: y2 as number,
-						x3: x3 as number,
-						y3: y3 as number,
-					})
-				}
+	createLine(colorStr: string, x1: number, y1: number, x2: number, y2: number): Line {
+		const color = new Color(colorStr)
+		return new Line({
+			color,
+			x1,
+			y1,
+			x2,
+			y2,
+		})
+	}
 
-				case 'ellipse': {
-					if (parts.length !== 6) {
-						throw new Error('Ellipse requires center and radii: cx cy rx ry')
-					}
-					const [, , cx, cy, rx, ry] = parts.map((p, i) => i < 2
-						? p
-						: parseFloat(p))
-					return new Ellipse({
-						color,
-						cx: cx as number,
-						cy: cy as number,
-						rx: rx as number,
-						ry: ry as number,
-					})
-				}
-
-				case 'polygon': {
-					if (parts.length !== 6) {
-						throw new Error('Polygon requires center, radius and vertex count: cx cy radius vertexCount')
-					}
-					const [, , cx, cy, radius, vertexCount] = parts.map((p, i) => i < 2
-						? p
-						: parseFloat(p))
-					return new RegularPolygon({
-						color,
-						cx: cx as number,
-						cy: cy as number,
-						radius: radius as number,
-						vertexCount: Math.floor(vertexCount as number),
-					})
-				}
-
-				case 'circle': {
-					if (parts.length !== 5) {
-						throw new Error('Circle requires center and radius: cx cy radius')
-					}
-					const [, , cx, cy, radius] = parts.map((p, i) => i < 2
-						? p
-						: parseFloat(p))
-					return new Circle({
-						color,
-						cx: cx as number,
-						cy: cy as number,
-						radius: radius as number,
-					})
-				}
-
-				case 'line': {
-					if (parts.length !== 6) {
-						throw new Error('Line requires start and end points: x1 y1 x2 y2')
-					}
-					const [, , x1, y1, x2, y2] = parts.map((p, i) => i < 2
-						? p
-						: parseFloat(p))
-					return new Line({
-						color,
-						x1: x1 as number,
-						y1: y1 as number,
-						x2: x2 as number,
-						y2: y2 as number,
-					})
-				}
-
-				case 'text': {
-					if (parts.length < 6) {
-						throw new Error('Text requires position, font size and text: left top fontSize text')
-					}
-					const [, , left, top, fontSize, ...textParts] = parts
-					const text = textParts.join(' ')
-					return new Text({
-						color,
-						left: parseFloat(left),
-						top: parseFloat(top),
-						fontSize: parseFloat(fontSize),
-						text,
-					})
-				}
-
-				default:
-					throw new Error(`Unknown shape type: ${shapeType}`)
-			}
-		}
-		catch (error) {
-			if (error instanceof Error) {
-				throw new Error(`Failed to create shape from description "${description}": ${error.message}`)
-			}
-			throw error
-		}
+	createText(colorStr: string, left: number, top: number, fontSize: number, text: string): Text {
+		const color = new Color(colorStr)
+		return new Text({
+			color,
+			left,
+			top,
+			fontSize,
+			text,
+		})
 	}
 }
 
 export {
 	ShapeFactory,
 }
-

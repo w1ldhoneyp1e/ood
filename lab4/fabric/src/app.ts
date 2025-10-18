@@ -39,7 +39,6 @@ function executeCommand(): void {
 		return
 	}
 
-	addOutput(`Executing ${commandLines.length} command(s):`)
 	commandLines.forEach(line => addOutput(`  ${line}`))
 
 	try {
