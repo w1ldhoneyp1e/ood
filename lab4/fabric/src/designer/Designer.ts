@@ -11,7 +11,7 @@ class Designer implements IDesigner {
 		for (const line of input) {
 			const trimmedLine = line.trim()
 
-			if (!trimmedLine || trimmedLine.startsWith('#')) {
+			if (!trimmedLine) {
 				continue
 			}
 
