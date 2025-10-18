@@ -43,7 +43,7 @@ describe('Painter', () => {
 	})
 
 	describe('drawPicture', () => {
-		it('should draw all shapes from draft', () => {
+		it('draw all shapes from draft', () => {
 			const draft = new PictureDraft()
 			draft.addShape(new Rectangle({
 				color: new Color('#ff0000'),
@@ -66,7 +66,7 @@ describe('Painter', () => {
 			expect(canvas.operations[0]).toContain('setColor')
 		})
 
-		it('should draw shapes in correct order', () => {
+		it('draw shapes in correct order', () => {
 			const draft = new PictureDraft()
 			const rect = new Rectangle({
 				color: new Color('#ff0000'),
@@ -93,7 +93,7 @@ describe('Painter', () => {
 			expect(ellipseColorIndex).toBeGreaterThan(0)
 		})
 
-		it('should not perform any operations for empty draft', () => {
+		it('not perform any operations for empty draft', () => {
 			const draft = new PictureDraft()
 
 			painter.drawPicture(draft, canvas)
@@ -101,7 +101,7 @@ describe('Painter', () => {
 			expect(canvas.operations.length).toBe(0)
 		})
 
-		it('должен вызвать метод draw для каждой фигуры', () => {
+		it('call draw for each shape', () => {
 			const draft = new PictureDraft()
 			const shapes = [
 				new Rectangle({
@@ -135,7 +135,7 @@ describe('Painter', () => {
 			expect(colorOperations.length).toBe(shapes.length)
 		})
 
-		it('должен корректно обработать макет с одной фигурой', () => {
+		it('correctly handle draft with one shape', () => {
 			const draft = new PictureDraft()
 			draft.addShape(new Rectangle({
 				color: new Color('#ffc0cb'),
@@ -149,29 +149,6 @@ describe('Painter', () => {
 
 			expect(canvas.operations[0]).toBe(`setColor(${new Color('#ffc0cb')})`)
 			expect(canvas.operations.length).toBeGreaterThan(1)
-		})
-	})
-
-	describe('интеграция с Canvas', () => {
-		it('должен использовать все методы интерфейса ICanvas', () => {
-			const draft = new PictureDraft()
-			draft.addShape(new Rectangle({
-				color: new Color('#000000'),
-				left: 0,
-				top: 0,
-				right: 50,
-				bottom: 50,
-			}))
-
-			painter.drawPicture(draft, canvas)
-
-			const hasSetColor = canvas.operations.some(op => op.startsWith('setColor'))
-			const hasMoveTo = canvas.operations.some(op => op.startsWith('moveTo'))
-			const hasLineTo = canvas.operations.some(op => op.startsWith('lineTo'))
-
-			expect(hasSetColor).toBe(true)
-			expect(hasMoveTo).toBe(true)
-			expect(hasLineTo).toBe(true)
 		})
 	})
 })

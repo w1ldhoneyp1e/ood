@@ -33,7 +33,7 @@ class MockCanvas implements ICanvas {
 }
 
 describe('Rectangle', () => {
-	it('should create rectangle with correct parameters', () => {
+	it('create rectangle', () => {
 		const rect = new Rectangle({
 			color: new Color('#ff0000'),
 			left: 10,
@@ -45,7 +45,7 @@ describe('Rectangle', () => {
 		expect(rect.color.toString()).toBe('#ff0000')
 	})
 
-	it('should throw error for invalid coordinates', () => {
+	it('invalid coordinates', () => {
 		expect(() => new Rectangle({
 			color: new Color('#ff0000'),
 			left: 100,
@@ -55,7 +55,7 @@ describe('Rectangle', () => {
 		})).toThrow('Right-bottom corner must be below and to the right')
 	})
 
-	it('should draw rectangle on canvas', () => {
+	it('draw rectangle', () => {
 		const canvas = new MockCanvas()
 		const rect = new Rectangle({
 			color: new Color('#0000ff'),
@@ -77,7 +77,7 @@ describe('Rectangle', () => {
 })
 
 describe('Triangle', () => {
-	it('should create triangle with correct parameters', () => {
+	it('create triangle', () => {
 		const triangle = new Triangle({
 			color: new Color('#00ff00'),
 			x1: 0,
@@ -91,7 +91,7 @@ describe('Triangle', () => {
 		expect(triangle.color.toString()).toBe('#00ff00')
 	})
 
-	it('should draw triangle on canvas', () => {
+	it('draw triangle', () => {
 		const canvas = new MockCanvas()
 		const triangle = new Triangle({
 			color: new Color('#ffff00'),
@@ -114,7 +114,7 @@ describe('Triangle', () => {
 })
 
 describe('Ellipse', () => {
-	it('should create ellipse with correct parameters', () => {
+	it('create ellipse', () => {
 		const ellipse = new Ellipse({
 			color: new Color('#ffc0cb'),
 			cx: 100,
@@ -126,7 +126,7 @@ describe('Ellipse', () => {
 		expect(ellipse.color.toString()).toBe('#ffc0cb')
 	})
 
-	it('should throw error for negative radii', () => {
+	it('negative radii', () => {
 		expect(() => new Ellipse({
 			color: new Color('#ff0000'),
 			cx: 0,
@@ -144,7 +144,7 @@ describe('Ellipse', () => {
 		})).toThrow('Radii must be non-negative')
 	})
 
-	it('should draw ellipse on canvas', () => {
+	it('draw ellipse', () => {
 		const canvas = new MockCanvas()
 		const ellipse = new Ellipse({
 			color: new Color('#0000ff'),
@@ -160,7 +160,7 @@ describe('Ellipse', () => {
 		expect(canvas.operations[1]).toBe('drawEllipse(50, 50, 30, 20)')
 	})
 
-	it('should create circle when rx equals ry', () => {
+	it('circle when rx equals ry', () => {
 		const circle = new Ellipse({
 			color: new Color('#000000'),
 			cx: 100,
@@ -174,7 +174,7 @@ describe('Ellipse', () => {
 })
 
 describe('RegularPolygon', () => {
-	it('should create polygon with correct parameters', () => {
+	it('create polygon', () => {
 		const polygon = new RegularPolygon({
 			color: new Color('#ff0000'),
 			cx: 200,
@@ -186,7 +186,7 @@ describe('RegularPolygon', () => {
 		expect(polygon.color.toString()).toBe('#ff0000')
 	})
 
-	it('should throw error for negative radius', () => {
+	it('negative radius', () => {
 		expect(() => new RegularPolygon({
 			color: new Color('#ff0000'),
 			cx: 0,
@@ -196,7 +196,7 @@ describe('RegularPolygon', () => {
 		})).toThrow('Radius must be non-negative')
 	})
 
-	it('should throw error for vertex count less than 3', () => {
+	it('vertex count less than 3', () => {
 		expect(() => new RegularPolygon({
 			color: new Color('#ff0000'),
 			cx: 0,
@@ -206,7 +206,7 @@ describe('RegularPolygon', () => {
 		})).toThrow('Polygon must have at least 3 vertices')
 	})
 
-	it('should draw polygon on canvas', () => {
+	it('draw polygon', () => {
 		const canvas = new MockCanvas()
 		const triangle = new RegularPolygon({
 			color: new Color('#00ff00'),
@@ -223,7 +223,7 @@ describe('RegularPolygon', () => {
 		expect(canvas.operations.filter(op => op.startsWith('lineTo')).length).toBe(3)
 	})
 
-	it('should create regular pentagon', () => {
+	it('regular pentagon', () => {
 		const pentagon = new RegularPolygon({
 			color: new Color('#ffff00'),
 			cx: 150,
@@ -235,7 +235,7 @@ describe('RegularPolygon', () => {
 		expect(pentagon.color.toString()).toBe('#ffff00')
 	})
 
-	it('should create regular hexagon', () => {
+	it('regular hexagon', () => {
 		const hexagon = new RegularPolygon({
 			color: new Color('#0000ff'),
 			cx: 200,
@@ -249,7 +249,7 @@ describe('RegularPolygon', () => {
 })
 
 describe('Circle', () => {
-	it('should create circle with correct parameters', () => {
+	it('create circle', () => {
 		const circle = new Circle({
 			color: new Color('#ff0000'),
 			cx: 100,
@@ -260,7 +260,7 @@ describe('Circle', () => {
 		expect(circle.color.toString()).toBe('#ff0000')
 	})
 
-	it('should throw error for negative radius', () => {
+	it('negative radius', () => {
 		expect(() => new Circle({
 			color: new Color('#ff0000'),
 			cx: 0,
@@ -269,7 +269,7 @@ describe('Circle', () => {
 		})).toThrow('Radius must be non-negative')
 	})
 
-	it('should draw circle on canvas', () => {
+	it('draw circle', () => {
 		const canvas = new MockCanvas()
 		const circle = new Circle({
 			color: new Color('#0000ff'),
@@ -286,7 +286,7 @@ describe('Circle', () => {
 })
 
 describe('Line', () => {
-	it('should create line with correct parameters', () => {
+	it('create line', () => {
 		const line = new Line({
 			color: new Color('#00ff00'),
 			x1: 0,
@@ -298,7 +298,7 @@ describe('Line', () => {
 		expect(line.color.toString()).toBe('#00ff00')
 	})
 
-	it('should draw line on canvas', () => {
+	it('draw line', () => {
 		const canvas = new MockCanvas()
 		const line = new Line({
 			color: new Color('#ffff00'),
@@ -317,7 +317,7 @@ describe('Line', () => {
 })
 
 describe('Text', () => {
-	it('should create text with correct parameters', () => {
+	it('create text', () => {
 		const text = new Text({
 			color: new Color('#ffc0cb'),
 			left: 50,
@@ -329,7 +329,7 @@ describe('Text', () => {
 		expect(text.color.toString()).toBe('#ffc0cb')
 	})
 
-	it('should throw error for negative font size', () => {
+	it('negative font size', () => {
 		expect(() => new Text({
 			color: new Color('#ff0000'),
 			left: 0,
@@ -339,7 +339,7 @@ describe('Text', () => {
 		})).toThrow('Font size must be non-negative')
 	})
 
-	it('should draw text on canvas', () => {
+	it('draw text', () => {
 		const canvas = new MockCanvas()
 		const text = new Text({
 			color: new Color('#000000'),

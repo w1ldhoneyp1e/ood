@@ -11,7 +11,7 @@ describe('PictureDraft', () => {
 	})
 
 	describe('addShape', () => {
-		it('should add shape to draft', () => {
+		it('add shape', () => {
 			const rect = new Rectangle({
 				color: new Color('#ff0000'),
 				left: 0,
@@ -25,7 +25,7 @@ describe('PictureDraft', () => {
 			expect(draft.getShapeCount()).toBe(1)
 		})
 
-		it('should add multiple shapes', () => {
+		it('add multiple shapes', () => {
 			const rect = new Rectangle({
 				color: new Color('#ff0000'),
 				left: 0,
@@ -51,11 +51,11 @@ describe('PictureDraft', () => {
 	})
 
 	describe('getShapeCount', () => {
-		it('should return 0 for empty draft', () => {
+		it('return 0 for empty draft', () => {
 			expect(draft.getShapeCount()).toBe(0)
 		})
 
-		it('should return correct shape count', () => {
+		it('return correct shape count', () => {
 			draft.addShape(new Rectangle({
 				color: new Color('#ff0000'),
 				left: 0,
@@ -78,7 +78,7 @@ describe('PictureDraft', () => {
 	})
 
 	describe('getShape', () => {
-		it('should return shape by index', () => {
+		it('return shape by index', () => {
 			const rect = new Rectangle({
 				color: new Color('#ff0000'),
 				left: 0,
@@ -103,7 +103,7 @@ describe('PictureDraft', () => {
 			expect(draft.getShape(1)).toBe(triangle)
 		})
 
-		it('should throw error for negative index', () => {
+		it('negative index', () => {
 			draft.addShape(new Rectangle({
 				color: new Color('#ff0000'),
 				left: 0,
@@ -115,7 +115,7 @@ describe('PictureDraft', () => {
 			expect(() => draft.getShape(-1)).toThrow('Shape index out of bounds')
 		})
 
-		it('should throw error for index >= shape count', () => {
+		it('index >= shape count', () => {
 			draft.addShape(new Rectangle({
 				color: new Color('#ff0000'),
 				left: 0,
@@ -130,11 +130,11 @@ describe('PictureDraft', () => {
 	})
 
 	describe('isEmpty', () => {
-		it('should return true for empty draft', () => {
+		it('return true for empty draft', () => {
 			expect(draft.isEmpty()).toBe(true)
 		})
 
-		it('should return false for non-empty draft', () => {
+		it('return false for non-empty draft', () => {
 			draft.addShape(new Rectangle({
 				color: new Color('#ff0000'),
 				left: 0,
@@ -147,8 +147,8 @@ describe('PictureDraft', () => {
 		})
 	})
 
-	describe('порядок фигур', () => {
-		it('должен сохранять порядок добавления фигур', () => {
+	describe('shape order', () => {
+		it('preserve shape order', () => {
 			const shapes = [
 				new Rectangle({
 					color: new Color('#ff0000'),
