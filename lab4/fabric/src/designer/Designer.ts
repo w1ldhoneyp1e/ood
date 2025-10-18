@@ -1,14 +1,9 @@
-import {CommandExecutor} from '../commands/CommandExecutor'
 import {type IShapeFactory} from '../shapes/IShapeFactory'
 import {type IDesigner} from './IDesigner'
 import {PictureDraft} from './PictureDraft'
 
 class Designer implements IDesigner {
-	private executor: CommandExecutor
-
-	constructor(private readonly factory: IShapeFactory) {
-		this.executor = new CommandExecutor(factory)
-	}
+	constructor(private readonly factory: IShapeFactory) {}
 
 	createDraft(input: string[]): PictureDraft {
 		const draft = new PictureDraft()
@@ -21,7 +16,7 @@ class Designer implements IDesigner {
 			}
 
 			try {
-				const shape = this.executor.execute(trimmedLine)
+				const shape = this.factory.createShape(trimmedLine)
 				draft.addShape(shape)
 			}
 			catch (error) {

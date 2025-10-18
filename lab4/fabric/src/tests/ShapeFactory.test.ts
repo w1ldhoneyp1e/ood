@@ -15,66 +15,87 @@ describe('ShapeFactory', () => {
 		factory = new ShapeFactory()
 	})
 
-	describe('createRectangle', () => {
-		it('create rectangle', () => {
-			const shape = factory.createRectangle('#ff0000', 10, 20, 100, 80)
+	describe('createShape', () => {
+		it('should create rectangle from description', () => {
+			const shape = factory.createShape('rectangle #ff0000 10 20 100 80')
 
 			expect(shape).toBeInstanceOf(Rectangle)
 			expect(shape.color.toString()).toBe('#ff0000')
 		})
-	})
 
-	describe('createTriangle', () => {
-		it('create triangle', () => {
-			const shape = factory.createTriangle('#00ff00', 0, 0, 50, 0, 25, 50)
+		it('should create triangle from description', () => {
+			const shape = factory.createShape('triangle #00ff00 0 0 50 0 25 50')
 
 			expect(shape).toBeInstanceOf(Triangle)
 			expect(shape.color.toString()).toBe('#00ff00')
 		})
-	})
 
-	describe('createEllipse', () => {
-		it('create ellipse', () => {
-			const shape = factory.createEllipse('#0000ff', 100, 100, 50, 30)
+		it('should create ellipse from description', () => {
+			const shape = factory.createShape('ellipse #0000ff 100 100 50 30')
 
 			expect(shape).toBeInstanceOf(Ellipse)
 			expect(shape.color.toString()).toBe('#0000ff')
 		})
-	})
 
-	describe('createPolygon', () => {
-		it('create polygon', () => {
-			const shape = factory.createPolygon('#ffff00', 200, 200, 50, 6)
+		it('should create polygon from description', () => {
+			const shape = factory.createShape('polygon #ffff00 200 200 50 6')
 
 			expect(shape).toBeInstanceOf(RegularPolygon)
 			expect(shape.color.toString()).toBe('#ffff00')
 		})
-	})
 
-	describe('createCircle', () => {
-		it('create circle', () => {
-			const shape = factory.createCircle('#ffc0cb', 100, 100, 50)
+		it('should create circle from description', () => {
+			const shape = factory.createShape('circle #ffc0cb 100 100 50')
 
 			expect(shape).toBeInstanceOf(Circle)
 			expect(shape.color.toString()).toBe('#ffc0cb')
 		})
-	})
 
-	describe('createLine', () => {
-		it('create line', () => {
-			const shape = factory.createLine('#000000', 0, 0, 100, 100)
+		it('should create line from description', () => {
+			const shape = factory.createShape('line #000000 0 0 100 100')
 
 			expect(shape).toBeInstanceOf(Line)
 			expect(shape.color.toString()).toBe('#000000')
 		})
-	})
 
-	describe('createText', () => {
-		it('create text', () => {
-			const shape = factory.createText('#ff0000', 50, 100, 16, 'Hello World')
+		it('should create text from description', () => {
+			const shape = factory.createShape('text #ff0000 50 100 16 Hello World')
 
 			expect(shape).toBeInstanceOf(Text)
 			expect(shape.color.toString()).toBe('#ff0000')
+		})
+
+		it('should handle extra spaces', () => {
+			const shape = factory.createShape('  rectangle   #ff0000   10  20  100  80  ')
+
+			expect(shape).toBeInstanceOf(Rectangle)
+			expect(shape.color.toString()).toBe('#ff0000')
+		})
+
+		it('should be case insensitive for command type', () => {
+			const shape = factory.createShape('RECTANGLE #ff0000 0 0 10 10')
+
+			expect(shape).toBeInstanceOf(Rectangle)
+			expect(shape.color.toString()).toBe('#ff0000')
+		})
+
+		it('should throw error for too few parameters', () => {
+			expect(() => factory.createShape('rectangle #ff0000'))
+				.toThrow(/Rectangle requires 4 coordinates/)
+		})
+
+		it('should throw error for invalid color format', () => {
+			expect(() => factory.createShape('rectangle orange 0 0 10 10'))
+				.toThrow(/Invalid color format/)
+		})
+
+		it('should throw error for empty string', () => {
+			expect(() => factory.createShape('')).toThrow(/Invalid command description/)
+		})
+
+		it('should throw error for unknown shape type', () => {
+			expect(() => factory.createShape('unknown #ff0000 100 100 50'))
+				.toThrow(/Unknown shape type/)
 		})
 	})
 })

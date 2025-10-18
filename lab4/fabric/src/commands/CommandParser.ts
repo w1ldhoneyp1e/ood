@@ -1,18 +1,22 @@
-import {type IShapeFactory} from '../shapes/IShapeFactory'
-import {type Shape} from '../shapes/Shape'
+interface ParsedCommand {
+	type: string,
+	color: string,
+	args: number[],
+	text?: string,
+}
 
-class CommandExecutor {
-	constructor(private factory: IShapeFactory) {}
+const ANY_SPACES_REGEXP = /\s+/
 
-	execute(description: string): Shape {
-		const parts = description.trim().split(/\s+/)
+class CommandParser {
+	parse(description: string): ParsedCommand {
+		const parts = description.trim().split(ANY_SPACES_REGEXP)
 
 		if (parts.length < 2) {
 			throw new Error('Invalid command description: too few parameters')
 		}
 
 		const type = parts[0].toLowerCase()
-		const colorStr = parts[1]
+		const color = parts[1]
 
 		switch (type) {
 			case 'rectangle': {
@@ -20,13 +24,11 @@ class CommandExecutor {
 					throw new Error('Rectangle requires 4 coordinates: left top right bottom')
 				}
 				const [, , left, top, right, bottom] = parts
-				return this.factory.createRectangle(
-					colorStr,
-					parseFloat(left),
-					parseFloat(top),
-					parseFloat(right),
-					parseFloat(bottom),
-				)
+				return {
+					type,
+					color,
+					args: [Number(left), Number(top), Number(right), Number(bottom)],
+				}
 			}
 
 			case 'triangle': {
@@ -34,15 +36,11 @@ class CommandExecutor {
 					throw new Error('Triangle requires 3 vertices: x1 y1 x2 y2 x3 y3')
 				}
 				const [, , x1, y1, x2, y2, x3, y3] = parts
-				return this.factory.createTriangle(
-					colorStr,
-					parseFloat(x1),
-					parseFloat(y1),
-					parseFloat(x2),
-					parseFloat(y2),
-					parseFloat(x3),
-					parseFloat(y3),
-				)
+				return {
+					type,
+					color,
+					args: [Number(x1), Number(y1), Number(x2), Number(y2), Number(x3), Number(y3)],
+				}
 			}
 
 			case 'ellipse': {
@@ -50,13 +48,11 @@ class CommandExecutor {
 					throw new Error('Ellipse requires center and radii: cx cy rx ry')
 				}
 				const [, , cx, cy, rx, ry] = parts
-				return this.factory.createEllipse(
-					colorStr,
-					parseFloat(cx),
-					parseFloat(cy),
-					parseFloat(rx),
-					parseFloat(ry),
-				)
+				return {
+					type,
+					color,
+					args: [Number(cx), Number(cy), Number(rx), Number(ry)],
+				}
 			}
 
 			case 'polygon': {
@@ -64,13 +60,11 @@ class CommandExecutor {
 					throw new Error('Polygon requires center, radius and vertex count: cx cy radius vertexCount')
 				}
 				const [, , cx, cy, radius, vertexCount] = parts
-				return this.factory.createPolygon(
-					colorStr,
-					parseFloat(cx),
-					parseFloat(cy),
-					parseFloat(radius),
-					Math.floor(parseFloat(vertexCount)),
-				)
+				return {
+					type,
+					color,
+					args: [Number(cx), Number(cy), Number(radius), Math.floor(Number(vertexCount))],
+				}
 			}
 
 			case 'circle': {
@@ -78,7 +72,11 @@ class CommandExecutor {
 					throw new Error('Circle requires center and radius: cx cy radius')
 				}
 				const [, , cx, cy, radius] = parts
-				return this.factory.createCircle(colorStr, parseFloat(cx), parseFloat(cy), parseFloat(radius))
+				return {
+					type,
+					color,
+					args: [Number(cx), Number(cy), Number(radius)],
+				}
 			}
 
 			case 'line': {
@@ -86,7 +84,11 @@ class CommandExecutor {
 					throw new Error('Line requires start and end points: x1 y1 x2 y2')
 				}
 				const [, , x1, y1, x2, y2] = parts
-				return this.factory.createLine(colorStr, parseFloat(x1), parseFloat(y1), parseFloat(x2), parseFloat(y2))
+				return {
+					type,
+					color,
+					args: [Number(x1), Number(y1), Number(x2), Number(y2)],
+				}
 			}
 
 			case 'text': {
@@ -95,7 +97,12 @@ class CommandExecutor {
 				}
 				const [, , left, top, fontSize, ...textParts] = parts
 				const text = textParts.join(' ')
-				return this.factory.createText(colorStr, parseFloat(left), parseFloat(top), parseFloat(fontSize), text)
+				return {
+					type,
+					color,
+					args: [Number(left), Number(top), Number(fontSize)],
+					text,
+				}
 			}
 
 			default:
@@ -105,5 +112,6 @@ class CommandExecutor {
 }
 
 export {
-	CommandExecutor,
+	CommandParser,
+	type ParsedCommand,
 }
