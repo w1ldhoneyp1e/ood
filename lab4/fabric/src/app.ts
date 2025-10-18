@@ -25,15 +25,25 @@ function addOutput(text: string): void {
 }
 
 function executeCommand(): void {
-	const command = commandInput.value.trim()
-	if (!command) {
+	const commands = commandInput.value.trim()
+	if (!commands) {
 		return
 	}
 
-	addOutput(command)
+	const commandLines = commands
+		.split('\n')
+		.map(line => line.trim())
+		.filter(line => line)
+
+	if (commandLines.length === 0) {
+		return
+	}
+
+	addOutput(`Executing ${commandLines.length} command(s):`)
+	commandLines.forEach(line => addOutput(`  ${line}`))
 
 	try {
-		const draft = designer.createDraft([command])
+		const draft = designer.createDraft(commandLines)
 		painter.drawPicture(draft, canvas2d)
 		addOutput(`Drawn ${draft.getShapeCount()} shape(s)`)
 
@@ -54,8 +64,9 @@ executeButton.addEventListener('click', executeCommand)
 
 clearButton.addEventListener('click', clearCanvas)
 
-commandInput.addEventListener('keypress', event => {
-	if (event.key === 'Enter') {
+commandInput.addEventListener('keydown', event => {
+	if (event.key === 'Enter' && event.ctrlKey) {
+		event.preventDefault()
 		executeCommand()
 	}
 })
