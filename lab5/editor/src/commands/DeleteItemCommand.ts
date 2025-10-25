@@ -13,7 +13,7 @@ class DeleteItemCommand implements ICommand {
 	}
 
 	execute(): void {
-		this.deletedItem = this.document.getItem(this.position, true)
+		this.deletedItem = this.document.getItem(this.position)
 		this.document.deleteItem(this.position)
 	}
 

@@ -17,7 +17,7 @@ class ResizeImageCommand implements ICommand {
 		this.newWidth = width
 		this.newHeight = height
 
-		const item = this.document.getItem(position, true)
+		const item = this.document.getItem(position)
 		this.image = item.getImage()
 		this.oldWidth = this.image?.getWidth() || 0
 		this.oldHeight = this.image?.getHeight() || 0

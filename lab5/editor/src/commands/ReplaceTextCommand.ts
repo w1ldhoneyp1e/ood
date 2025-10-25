@@ -14,7 +14,7 @@ class ReplaceTextCommand implements ICommand {
 		this.position = position
 		this.newText = text
 
-		const item = this.document.getItem(position, true)
+		const item = this.document.getItem(position)
 		this.paragraph = item.getParagraph()
 		this.oldText = this.paragraph?.getText() || ''
 	}

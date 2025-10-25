@@ -4,7 +4,7 @@ import {v4 as uuidv4} from 'uuid'
 import {CommandHistory} from '../commands/CommandHistory'
 import {type ICommand} from '../interfaces/ICommand'
 import {type IDocument} from '../interfaces/IDocument'
-import {type IConstDocumentItem, type IDocumentItem} from '../interfaces/IDocumentItem'
+import {type IDocumentItem} from '../interfaces/IDocumentItem'
 import {DocumentItem} from './DocumentItem'
 import {Image} from './Image'
 import {Paragraph} from './Paragraph'
@@ -58,9 +58,7 @@ class Document implements IDocument {
 		return this.items.length
 	}
 
-	getItem(index: number): IConstDocumentItem
-	getItem(index: number, mutable: true): IDocumentItem
-	getItem(index: number, mutable?: true): IConstDocumentItem | IDocumentItem {
+	getItem(index: number): IDocumentItem {
 		if (index >= this.items.length) {
 			throw new Error(INDEX_ERROR)
 		}
