@@ -133,22 +133,6 @@ class CommandManager {
 				return 'Команда выполнена'
 		}
 	}
-
-	canUndo(): boolean {
-		return this.commandHistory.canUndo()
-	}
-
-	undo(): void {
-		this.commandHistory.undo()
-	}
-
-	canRedo(): boolean {
-		return this.commandHistory.canRedo()
-	}
-
-	redo(): void {
-		this.commandHistory.redo()
-	}
 }
 
 export {
