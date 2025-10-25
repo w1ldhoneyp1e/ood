@@ -1,8 +1,6 @@
 import * as path from 'path'
 import * as fs from 'fs-extra'
 import {v4 as uuidv4} from 'uuid'
-import {CommandHistory} from '../commands/CommandHistory'
-import {type ICommand} from '../interfaces/ICommand'
 import {type IDocument} from '../interfaces/IDocument'
 import {type IDocumentItem} from '../interfaces/IDocumentItem'
 import {DocumentItem} from './DocumentItem'
@@ -14,7 +12,6 @@ const INDEX_ERROR = 'Позиция превышает количество эл
 class Document implements IDocument {
 	private title = ''
 	private items: DocumentItem[] = []
-	private commandHistory: CommandHistory = new CommandHistory()
 
 	insertParagraph(text: string, position?: number): IDocumentItem {
 		const insertPosition = position ?? this.items.length
@@ -81,23 +78,6 @@ class Document implements IDocument {
 	setTitle(title: string): void {
 		this.title = title
 	}
-
-	canUndo(): boolean {
-		return this.commandHistory.canUndo()
-	}
-
-	undo(): void {
-		this.commandHistory.undo()
-	}
-
-	canRedo(): boolean {
-		return this.commandHistory.canRedo()
-	}
-
-	redo(): void {
-		this.commandHistory.redo()
-	}
-
 
 	save(filePath: string): void {
 		let html = '<!DOCTYPE html>\n<html>\n<head>\n'

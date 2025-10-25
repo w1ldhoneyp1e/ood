@@ -8,10 +8,6 @@ interface IDocument {
 	deleteItem: (index: number) => void,
 	getTitle: () => string,
 	setTitle: (title: string) => void,
-	canUndo: () => boolean,
-	undo: () => void,
-	canRedo: () => boolean,
-	redo: () => void,
 	save: (path: string) => void,
 }
 
