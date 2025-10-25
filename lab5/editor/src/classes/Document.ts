@@ -1,6 +1,4 @@
-import * as path from 'path'
 import * as fs from 'fs-extra'
-import {v4 as uuidv4} from 'uuid'
 import {type IDocument} from '../interfaces/IDocument'
 import {type IDocumentItem} from '../interfaces/IDocumentItem'
 import {DocumentItem} from './DocumentItem'
@@ -35,15 +33,7 @@ class Document implements IDocument {
 			throw new Error(INDEX_ERROR)
 		}
 
-		const imageExtension = path.extname(imagePath)
-		const uniqueImageName = `${uuidv4()}${imageExtension}`
-		const targetImagePath = path.join('images', uniqueImageName)
-
-		fs.ensureDirSync('images')
-
-		fs.copyFileSync(imagePath, targetImagePath)
-
-		const image = new Image(targetImagePath, width, height)
+		const image = new Image(imagePath, width, height)
 		const documentItem = new DocumentItem(undefined, image)
 
 		this.items.splice(insertPosition, 0, documentItem)
