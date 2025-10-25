@@ -23,7 +23,6 @@ class InsertParagraphCommand implements ICommand {
 			this.document.deleteItem(this.position)
 		}
 	}
-
 }
 
 export {

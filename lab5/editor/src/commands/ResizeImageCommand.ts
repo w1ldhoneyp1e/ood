@@ -4,7 +4,6 @@ import {type IImage} from '../interfaces/IImage'
 
 class ResizeImageCommand implements ICommand {
 	private document: IDocument
-	private position: number
 	private newWidth: number
 	private newHeight: number
 	private oldWidth: number
@@ -13,7 +12,6 @@ class ResizeImageCommand implements ICommand {
 
 	constructor(document: IDocument, position: number, width: number, height: number) {
 		this.document = document
-		this.position = position
 		this.newWidth = width
 		this.newHeight = height
 

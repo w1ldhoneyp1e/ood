@@ -19,7 +19,6 @@ class SetTitleCommand implements ICommand {
 	undo(): void {
 		this.document.setTitle(this.oldTitle)
 	}
-
 }
 
 export {

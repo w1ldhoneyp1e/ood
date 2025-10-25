@@ -28,7 +28,6 @@ class InsertImageCommand implements ICommand {
 			this.document.deleteItem(this.position)
 		}
 	}
-
 }
 
 export {
