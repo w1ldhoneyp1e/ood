@@ -1,4 +1,4 @@
-import {CommandParser} from '../parsers/CommandParser'
+import {CommandParser} from '../parser/CommandParser'
 
 describe('CommandParser', () => {
 	let parser: CommandParser

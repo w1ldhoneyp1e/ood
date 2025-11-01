@@ -2,7 +2,7 @@ import * as path from 'path'
 import * as fs from 'fs-extra'
 import {Document} from '../classes/Document'
 import {CommandFactory} from '../commands/CommandFactory'
-import {type ParsedCommand} from '../parsers/CommandParser'
+import {type ParsedCommand} from '../parser/CommandParser'
 
 describe('CommandFactory', () => {
 	let commandFactory: CommandFactory

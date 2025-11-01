@@ -1,6 +1,6 @@
 import {CommandManager} from '../classes/CommandManager'
 import {Document} from '../classes/Document'
-import {type ParsedCommand} from '../parsers/CommandParser'
+import {type ParsedCommand} from '../parser/CommandParser'
 
 describe('CommandManager', () => {
 	let commandManager: CommandManager
