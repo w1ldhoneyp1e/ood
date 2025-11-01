@@ -26,7 +26,7 @@ class MockCommand implements ICommand {
 	}
 }
 
-describe('CommandHistory', () => {
+describe('CommandHistory', () => { // undo empty history
 	let history: CommandHistory
 
 	beforeEach(() => {
@@ -35,6 +35,18 @@ describe('CommandHistory', () => {
 
 	test('start with no commands', () => {
 		expect(history.canUndo()).toBe(false)
+		expect(history.canRedo()).toBe(false)
+	})
+
+	test('undo on empty history does nothing', () => {
+		expect(history.canUndo()).toBe(false)
+		history.undo()
+		expect(history.canUndo()).toBe(false)
+	})
+
+	test('redo on empty history does nothing', () => {
+		expect(history.canRedo()).toBe(false)
+		history.redo()
 		expect(history.canRedo()).toBe(false)
 	})
 

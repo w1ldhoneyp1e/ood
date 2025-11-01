@@ -2,7 +2,11 @@
 import {type ICommand} from '../interfaces/ICommand'
 import {type IDocument} from '../interfaces/IDocument'
 import {type IDocumentItem} from '../interfaces/IDocumentItem'
-import {copyImageFile, deleteImageFile} from '../utils/ImageFileManager'
+import {
+	copyImageFile,
+	deleteImageFile,
+	fileExists,
+} from '../utils/ImageFileManager'
 
 class InsertImageCommand implements ICommand {
 	private document: IDocument
@@ -14,6 +18,18 @@ class InsertImageCommand implements ICommand {
 	private insertedItem: IDocumentItem | null = null
 
 	constructor(document: IDocument, path: string, width: number, height: number, position: number) {
+		if (!fileExists(path)) {
+			throw new Error(`Файл изображения не найден: ${path}`)
+		}
+
+		if (position < 0 || position > document.getItemsCount()) {
+			throw new Error(`Некорректная позиция. Допустимый диапазон: 0-${document.getItemsCount()}`)
+		}
+
+		if (width <= 0 || height <= 0) {
+			throw new Error(`Некорректные размеры изображения: ширина и высота должны быть больше 0`)
+		}
+
 		this.document = document
 		this.originalPath = path
 		this.width = width

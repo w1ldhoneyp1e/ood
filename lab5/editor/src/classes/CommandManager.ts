@@ -36,7 +36,7 @@ class CommandManager {
 			default:
 				try {
 					const command = this.commandFactory.createCommand(parsed)
-					this.executeCommand(command)
+					this.executeCommand(command) // проверять валидность команды, выполняемость в конструкторе
 					return this.getSuccessMessage(type)
 				}
 				catch (error) {

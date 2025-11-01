@@ -11,14 +11,27 @@ class ResizeImageCommand implements ICommand {
 	private image: IImage | null = null
 
 	constructor(document: IDocument, position: number, width: number, height: number) {
+		if (position < 0 || position >= document.getItemsCount()) {
+			throw new Error(`Некорректная позиция. Допустимый диапазон: 0-${document.getItemsCount() - 1}`)
+		}
+
+		if (width <= 0 || height <= 0) {
+			throw new Error(`Некорректные размеры изображения: ширина и высота должны быть больше 0`)
+		}
+
 		this.document = document
 		this.newWidth = width
 		this.newHeight = height
 
 		const item = this.document.getItem(position)
 		this.image = item.getImage()
-		this.oldWidth = this.image?.getWidth() || 0
-		this.oldHeight = this.image?.getHeight() || 0
+
+		if (!this.image) {
+			throw new Error('Элемент не является изображением')
+		}
+
+		this.oldWidth = this.image.getWidth()
+		this.oldHeight = this.image.getHeight()
 	}
 
 	execute(): void {

@@ -9,6 +9,10 @@ class DeleteItemCommand implements ICommand {
 	private deletedImagePath: string | null = null
 
 	constructor(document: IDocument, position: number) {
+		if (position < 0 || position >= document.getItemsCount()) {
+			throw new Error(`Некорректная позиция. Допустимый диапазон: 0-${document.getItemsCount() - 1}`)
+		}
+
 		this.document = document
 		this.position = position
 	}

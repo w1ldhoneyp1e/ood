@@ -9,6 +9,10 @@ class InsertParagraphCommand implements ICommand {
 	private insertedItem: IDocumentItem | null = null
 
 	constructor(document: IDocument, text: string, position: number) {
+		if (position < 0 || position > document.getItemsCount()) {
+			throw new Error(`Некорректная позиция. Допустимый диапазон: 0-${document.getItemsCount()}`)
+		}
+
 		this.document = document
 		this.text = text
 		this.position = position

@@ -191,4 +191,13 @@ describe('CommandFactory', () => {
 
 		expect(() => commandFactory.createCommand(parsed)).toThrow('Ширина и высота должны быть числами')
 	})
+
+	test('throw error for non-existent image file', () => {
+		const parsed: ParsedCommand = {
+			type: 'insertimage',
+			args: ['end', '100', '200', 'non-existent-file.jpg'],
+		}
+
+		expect(() => commandFactory.createCommand(parsed)).toThrow('Файл изображения не найден')
+	})
 })

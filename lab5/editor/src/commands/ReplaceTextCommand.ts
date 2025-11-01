@@ -9,12 +9,21 @@ class ReplaceTextCommand implements ICommand {
 	private paragraph: IParagraph | null = null
 
 	constructor(document: IDocument, position: number, text: string) {
+		if (position < 0 || position >= document.getItemsCount()) {
+			throw new Error(`Некорректная позиция. Допустимый диапазон: 0-${document.getItemsCount() - 1}`)
+		}
+
 		this.document = document
 		this.newText = text
 
 		const item = this.document.getItem(position)
 		this.paragraph = item.getParagraph()
-		this.oldText = this.paragraph?.getText() || ''
+
+		if (!this.paragraph) {
+			throw new Error('Элемент не является параграфом')
+		}
+
+		this.oldText = this.paragraph.getText()
 	}
 
 	execute(): void {

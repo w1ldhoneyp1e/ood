@@ -26,7 +26,12 @@ function deleteImageFile(imagePath: string): void {
 	}
 }
 
+function fileExists(filePath: string): boolean {
+	return fs.existsSync(filePath)
+}
+
 export {
 	copyImageFile,
 	deleteImageFile,
+	fileExists,
 }
