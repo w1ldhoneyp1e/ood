@@ -1,7 +1,7 @@
 import * as readline from 'readline'
 import {CommandManager} from './classes/CommandManager'
 import {Document} from './classes/Document'
-import {CommandParser} from './parsers/CommandParser'
+import {CommandParser} from './parser/CommandParser'
 
 async function main(): Promise<void> {
 	const document = new Document()

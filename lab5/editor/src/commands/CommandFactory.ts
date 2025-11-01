@@ -1,6 +1,6 @@
 import {type ICommand} from '../interfaces/ICommand'
 import {type IDocument} from '../interfaces/IDocument'
-import {type ParsedCommand} from '../parsers/CommandParser'
+import {type ParsedCommand} from '../parser/CommandParser'
 import {DeleteItemCommand} from './DeleteItemCommand'
 import {InsertImageCommand} from './InsertImageCommand'
 import {InsertParagraphCommand} from './InsertParagraphCommand'
@@ -50,15 +50,12 @@ class CommandFactory {
 		const positionStr = args[0]
 		const text = args.slice(1).join(' ')
 
-		let position: number | undefined
-		if (positionStr.toLowerCase() === 'end') {
-			position = undefined
-		}
-		else {
-			position = Number(positionStr)
-			if (isNaN(position)) {
-				throw new Error('Позиция должна быть числом или "end"')
-			}
+		const position = positionStr.toLowerCase() === 'end'
+			? undefined
+			: Number(positionStr)
+
+		if (position !== undefined && isNaN(position)) {
+			throw new Error('Позиция должна быть числом или "end"')
 		}
 
 		return new InsertParagraphCommand(this.document, text, position ?? this.document.getItemsCount())
@@ -78,15 +75,12 @@ class CommandFactory {
 			throw new Error('Ширина и высота должны быть числами')
 		}
 
-		let position: number | undefined
-		if (positionStr.toLowerCase() === 'end') {
-			position = undefined
-		}
-		else {
-			position = Number(positionStr)
-			if (isNaN(position)) {
-				throw new Error('Позиция должна быть числом или "end"')
-			}
+		const position = positionStr.toLowerCase() === 'end'
+			? undefined
+			: Number(positionStr)
+
+		if (position !== undefined && isNaN(position)) {
+			throw new Error('Позиция должна быть числом или "end"')
 		}
 
 		return new InsertImageCommand(this.document, path, width, height, position ?? this.document.getItemsCount())

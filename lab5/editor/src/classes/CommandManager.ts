@@ -2,7 +2,7 @@ import {CommandFactory} from '../commands/CommandFactory'
 import {CommandHistory} from '../commands/CommandHistory'
 import {type ICommand} from '../interfaces/ICommand'
 import {type IDocument} from '../interfaces/IDocument'
-import {type ParsedCommand} from '../parsers/CommandParser'
+import {type ParsedCommand} from '../parser/CommandParser'
 
 class CommandManager {
 	private commandHistory: CommandHistory = new CommandHistory()
