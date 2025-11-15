@@ -1,6 +1,6 @@
 import {type ICanvas} from '../graphicsLib/ICanvas'
-import {type Point} from '../modernGraphicsLib/Point'
 import {type ICanvasDrawable} from './ICanvasDrawable'
+import {type Point} from './Point'
 
 class Triangle implements ICanvasDrawable {
 	private p1: Point
