@@ -19,9 +19,9 @@ class ModernGraphicsRendererAdapter implements ICanvas {
 		this.renderer.beginDraw()
 	}
 
-	setColor(rgbColor: number): void {
-		this.currentColor = rgbColor
-		this.defaultColor = hexToRGBA(rgbColor)
+	setColor(hexColor: number): void {
+		this.currentColor = hexColor
+		this.defaultColor = hexToRGBA(hexColor)
 	}
 
 	moveTo(x: number, y: number): void {

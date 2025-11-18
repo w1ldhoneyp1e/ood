@@ -9,8 +9,8 @@ class Canvas implements ICanvas {
 		console.log(`LineTo (${x}, ${y})`)
 	}
 
-	setColor(rgbColor: number): void {
-		const hex = rgbColor
+	setColor(hexColor: number): void {
+		const hex = hexColor
 			.toString(16)
 			.padStart(6, '0')
 			.toUpperCase()
