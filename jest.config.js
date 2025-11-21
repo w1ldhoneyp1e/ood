@@ -24,5 +24,6 @@ module.exports = {
 		'<rootDir>/lab3/data-streams',
 		'<rootDir>/lab4/fabric',
 		'<rootDir>/lab5/editor',
+		'<rootDir>/lab7/slides',
 	],
 }
