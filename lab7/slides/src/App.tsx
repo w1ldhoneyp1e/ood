@@ -3,7 +3,7 @@ import {CommandInput} from './components/CommandInput'
 import {SlideWindow} from './components/SlideWindow'
 import {Slide} from './Slide'
 
-export function App(): React.JSX.Element {
+function App() {
 	const [slide, setSlide] = useState<Slide>(new Slide())
 
 	const handleSlideUpdate = (newSlide: Slide): void => {
@@ -47,4 +47,8 @@ export function App(): React.JSX.Element {
 			</div>
 		</div>
 	)
+}
+
+export {
+	App,
 }
