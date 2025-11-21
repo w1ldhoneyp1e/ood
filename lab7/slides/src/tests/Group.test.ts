@@ -60,7 +60,7 @@ describe('Group', () => {
 			expect(rectFrame.height).toBe(60)
 		})
 
-		test('при изменении фрейма группы несколько фигур должны масштабироваться и смещаться', () => {
+		test('при изменении фрейма группы все фигуры должны масштабироваться и смещаться', () => {
 			const group = new Group()
 			const rect1 = new Rectangle(
 				new Frame(10, 10, 20, 20),
