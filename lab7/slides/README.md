@@ -1,13 +1,22 @@
-add ellipse 330 300 50 50 #FFB6C1 #FF69B4 2
-add ellipse 400 230 50 50 #FFB6C1 #FF69B4 2
-add ellipse 470 300 50 50 #FFB6C1 #FF69B4 2
-add ellipse 400 370 50 50 #FFB6C1 #FF69B4 2
-add ellipse 365 265 50 50 #FFB6C1 #FF69B4 2
-add ellipse 435 265 50 50 #FFB6C1 #FF69B4 2
-add ellipse 435 335 50 50 #FFB6C1 #FF69B4 2
-add ellipse 365 335 50 50 #FFB6C1 #FF69B4 2
+add rectangle 395 330 10 40 #228B22 #006400 2
+add rectangle 392 370 10 35 #228B22 #006400 2
+add rectangle 390 405 10 30 #228B22 #006400 2
+add rectangle 393 435 10 35 #228B22 #006400 2
+add rectangle 396 470 10 40 #228B22 #006400 2
 
-add ellipse 380 280 70 70 #FFD700 #FFA500 2
+add triangle 340 390 50 40 #32CD32 #228B22 2
+add triangle 400 390 50 40 #32CD32 #228B22 2
+
+add ellipse 400 250 60 60 #FFB6C1 #FF69B4 2
+add ellipse 450 300 60 60 #FFB6C1 #FF69B4 2
+add ellipse 400 350 60 60 #FFB6C1 #FF69B4 2
+add ellipse 350 300 60 60 #FFB6C1 #FF69B4 2
+add ellipse 424 265 60 60 #FFB6C1 #FF69B4 2
+add ellipse 424 335 60 60 #FFB6C1 #FF69B4 2
+add ellipse 376 335 60 60 #FFB6C1 #FF69B4 2
+add ellipse 376 265 60 60 #FFB6C1 #FF69B4 2
+
+add ellipse 400 300 60 60 #FFD700 #FFA500 2
 
 yarn workspace slides start
 yarn workspace slides test

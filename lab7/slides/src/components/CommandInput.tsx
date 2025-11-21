@@ -20,9 +20,16 @@ function CommandInput({
 
 		try {
 			const parser = new CommandParser()
-			const newSlide = parser.parseCommand(command, slide)
+			const commands = command.split('\n').map(cmd => cmd.trim())
+				.filter(cmd => cmd.length > 0)
+
+			let currentSlide = slide
+			for (const cmd of commands) {
+				currentSlide = parser.parseCommand(cmd, currentSlide)
+			}
+
 			setCommand('')
-			onSlideUpdate(newSlide)
+			onSlideUpdate(currentSlide)
 		}
 		catch (error) {
 			console.log(`Ошибка: ${error instanceof Error
@@ -51,7 +58,7 @@ function CommandInput({
 					value={command}
 					onChange={e => setCommand(e.target.value)}
 					onKeyDown={handleKeyPress}
-					placeholder="Введите команду (Ctrl+Enter для выполнения)"
+					placeholder="Введите команды (по одной на строку, Ctrl+Enter для выполнения)"
 					style={{
 						width: '100%',
 						minHeight: '100px',
