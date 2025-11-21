@@ -2,6 +2,7 @@ import {type ICanvas} from '../canvas/ICanvas'
 import {FillStyle} from '../types/FillStyle'
 import {Frame} from '../types/Frame'
 import {LineStyle} from '../types/LineStyle'
+import {type RGBA} from '../types/RGBA'
 import {type IShape} from './IShape'
 
 class Group implements IShape {
@@ -66,17 +67,20 @@ class Group implements IShape {
 		}
 	}
 
-	getFillStyle(): FillStyle {
-		if (this.shapes.length === 0) {
-			return new FillStyle(false, undefined)
-		}
-
-		const firstStyle = this.shapes[0].getFillStyle()
+	private checkCommonStyleProperties(
+		getStyle: (shape: IShape) => {
+			enabled: boolean,
+			color: RGBA | undefined,
+		}): {
+			enabled: boolean,
+			color: RGBA | undefined,
+		} {
+		const firstStyle = getStyle(this.shapes[0])
 		let allEnabledSame = true
 		let allColorSame = true
 
 		for (let i = 1; i < this.shapes.length; i++) {
-			const style = this.shapes[i].getFillStyle()
+			const style = getStyle(this.shapes[i])
 			if (style.enabled !== firstStyle.enabled) {
 				allEnabledSame = false
 			}
@@ -90,14 +94,26 @@ class Group implements IShape {
 			}
 		}
 
-		return new FillStyle(
-			allEnabledSame
+		return {
+			enabled: allEnabledSame
 				? firstStyle.enabled
 				: false,
-			allEnabledSame && allColorSame
+			color: allEnabledSame && allColorSame
 				? firstStyle.color
 				: undefined,
+		}
+	}
+
+	getFillStyle(): FillStyle {
+		if (this.shapes.length === 0) {
+			return new FillStyle(false, undefined)
+		}
+
+		const {enabled, color} = this.checkCommonStyleProperties(
+			shape => shape.getFillStyle(),
 		)
+
+		return new FillStyle(enabled, color)
 	}
 
 	setFillStyle(style: FillStyle): void {
@@ -115,37 +131,23 @@ class Group implements IShape {
 			return new LineStyle(false, undefined, 0)
 		}
 
-		const firstStyle = this.shapes[0].getLineStyle()
-		let allEnabledSame = true
-		let allColorSame = true
-		let allWidthSame = true
+		const {enabled, color} = this.checkCommonStyleProperties(
+			shape => shape.getLineStyle(),
+		)
 
+		const firstStyle = this.shapes[0].getLineStyle()
+		let allWidthSame = true
 		for (let i = 1; i < this.shapes.length; i++) {
 			const style = this.shapes[i].getLineStyle()
-			if (style.enabled !== firstStyle.enabled) {
-				allEnabledSame = false
-			}
-			if (style.color === undefined || firstStyle.color === undefined) {
-				if (style.color !== firstStyle.color) {
-					allColorSame = false
-				}
-			}
-			else if (!style.color.equals(firstStyle.color)) {
-				allColorSame = false
-			}
 			if (style.lineWidth !== firstStyle.lineWidth) {
 				allWidthSame = false
 			}
 		}
 
 		return new LineStyle(
-			allEnabledSame
-				? firstStyle.enabled
-				: false,
-			allEnabledSame && allColorSame
-				? firstStyle.color
-				: undefined,
-			allEnabledSame && allWidthSame
+			enabled,
+			color,
+			enabled && allWidthSame
 				? firstStyle.lineWidth
 				: 0,
 		)
