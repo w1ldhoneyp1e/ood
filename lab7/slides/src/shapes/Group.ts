@@ -6,16 +6,7 @@ import {type RGBA} from '../types/RGBA'
 import {type IShape} from './IShape'
 
 class Group implements IShape {
-	private id: string
 	private shapes: IShape[] = []
-
-	constructor(id: string) {
-		this.id = id
-	}
-
-	getId(): string {
-		return this.id
-	}
 
 	addShape(shape: IShape): void {
 		this.shapes.push(shape)
@@ -182,7 +173,7 @@ class Group implements IShape {
 	}
 
 	clone(): IShape {
-		const clonedGroup = new Group(this.id)
+		const clonedGroup = new Group()
 		for (const shape of this.shapes) {
 			clonedGroup.addShape(shape.clone())
 		}
