@@ -6,7 +6,9 @@ interface SlideWindowProps {
 	slide: Slide,
 }
 
-export function SlideWindow({slide}: SlideWindowProps): React.JSX.Element {
+function SlideWindow({
+	slide,
+}: SlideWindowProps) {
 	const canvasRef = useRef<HTMLCanvasElement>(null)
 
 	useEffect(() => {
@@ -65,3 +67,6 @@ export function SlideWindow({slide}: SlideWindowProps): React.JSX.Element {
 	)
 }
 
+export {
+	SlideWindow,
+}
