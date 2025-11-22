@@ -5,14 +5,20 @@ import {type LineStyle} from '../types/LineStyle'
 import {type IShape} from './IShape'
 
 class Triangle implements IShape {
+	private id: string
 	private frame: Frame
 	private fillStyle: FillStyle
 	private lineStyle: LineStyle
 
-	constructor(frame: Frame, fillStyle: FillStyle, lineStyle: LineStyle) {
+	constructor(id: string, frame: Frame, fillStyle: FillStyle, lineStyle: LineStyle) {
+		this.id = id
 		this.frame = frame
 		this.fillStyle = fillStyle
 		this.lineStyle = lineStyle
+	}
+
+	getId(): string {
+		return this.id
 	}
 
 	getFrame(): Frame {
@@ -76,7 +82,7 @@ class Triangle implements IShape {
 	}
 
 	clone(): IShape {
-		return new Triangle(this.frame, this.fillStyle, this.lineStyle)
+		return new Triangle(this.id, this.frame, this.fillStyle, this.lineStyle)
 	}
 }
 

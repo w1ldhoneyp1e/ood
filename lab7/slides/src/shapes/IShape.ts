@@ -4,6 +4,7 @@ import {type Frame} from '../types/Frame'
 import {type LineStyle} from '../types/LineStyle'
 
 interface IShape {
+	getId: () => string,
 	getFrame: () => Frame,
 	setFrame: (frame: Frame) => void,
 	getFillStyle: () => FillStyle,

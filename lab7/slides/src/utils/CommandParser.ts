@@ -1,7 +1,8 @@
 import {Ellipse} from '../shapes/Ellipse'
+import {Group} from '../shapes/Group'
 import {Rectangle} from '../shapes/Rectangle'
 import {Triangle} from '../shapes/Triangle'
-import {Slide} from '../Slide'
+import {type Slide} from '../Slide'
 import {FillStyle} from '../types/FillStyle'
 import {Frame} from '../types/Frame'
 import {LineStyle} from '../types/LineStyle'
@@ -23,6 +24,10 @@ export class CommandParser {
 
 		if (action === 'add') {
 			return this.handleAdd(parts.slice(1), currentSlide)
+		}
+
+		if (action === 'create') {
+			return this.handleCreate(parts.slice(1), currentSlide)
 		}
 
 		throw new Error(`Неизвестная команда: ${action}`)
@@ -71,19 +76,17 @@ export class CommandParser {
 			throw new Error('Некорректные числовые значения')
 		}
 
+		const id = slide.generateId()
 		const rectangle = new Rectangle(
+			id,
 			new Frame(x, y, width, height),
 			new FillStyle(true, fillColor),
 			new LineStyle(true, lineColor, lineWidth),
 		)
 
-		const newSlide = new Slide()
-		for (const shape of slide.getShapes()) {
-			newSlide.addShape(shape)
-		}
-		newSlide.addShape(rectangle)
+		slide.addShape(rectangle)
 
-		return newSlide
+		return slide
 	}
 
 	private addEllipse(args: string[], slide: Slide): Slide {
@@ -103,19 +106,17 @@ export class CommandParser {
 			throw new Error('Некорректные числовые значения')
 		}
 
+		const id = slide.generateId()
 		const ellipse = new Ellipse(
+			id,
 			new Frame(x, y, width, height),
 			new FillStyle(true, fillColor),
 			new LineStyle(true, lineColor, lineWidth),
 		)
 
-		const newSlide = new Slide()
-		for (const shape of slide.getShapes()) {
-			newSlide.addShape(shape)
-		}
-		newSlide.addShape(ellipse)
+		slide.addShape(ellipse)
 
-		return newSlide
+		return slide
 	}
 
 	private addTriangle(args: string[], slide: Slide): Slide {
@@ -135,19 +136,55 @@ export class CommandParser {
 			throw new Error('Некорректные числовые значения')
 		}
 
+		const id = slide.generateId()
 		const triangle = new Triangle(
+			id,
 			new Frame(x, y, width, height),
 			new FillStyle(true, fillColor),
 			new LineStyle(true, lineColor, lineWidth),
 		)
 
-		const newSlide = new Slide()
-		for (const shape of slide.getShapes()) {
-			newSlide.addShape(shape)
-		}
-		newSlide.addShape(triangle)
+		slide.addShape(triangle)
 
-		return newSlide
+		return slide
+	}
+
+	private handleCreate(parts: string[], slide: Slide): Slide {
+		if (parts.length === 0) {
+			throw new Error('Не указан тип объекта для создания')
+		}
+
+		const objectType = parts[0].toLowerCase()
+		const args = parts.slice(1)
+
+		if (objectType === 'group') {
+			return this.createGroup(args, slide)
+		}
+
+		throw new Error(`Неизвестный тип объекта: ${objectType}`)
+	}
+
+	private createGroup(args: string[], slide: Slide): Slide {
+		if (args.length < 2) {
+			throw new Error('Недостаточно аргументов для создания группы. Формат: create group <id1> <id2> ...')
+		}
+
+		const groupId = slide.generateId()
+		const group = new Group(groupId)
+
+		const shapeIds = args
+		for (const shapeId of shapeIds) {
+			const shape = slide.getShapeById(shapeId)
+			if (!shape) {
+				throw new Error(`Фигура с ID "${shapeId}" не найдена`)
+			}
+			group.addShape(shape)
+			slide.removeShape(shape)
+		}
+
+		slide.addShape(group)
+
+		return slide
 	}
 
 	private parseColor(colorStr: string): RGBA {

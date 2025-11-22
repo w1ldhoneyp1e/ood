@@ -9,7 +9,7 @@ import {RGBA} from '../types/RGBA'
 describe('Group', () => {
 	describe('Frame', () => {
 		test('пустая группа должна возвращать фрейм (0, 0, 0, 0)', () => {
-			const group = new Group()
+			const group = new Group('group1')
 			const frame = group.getFrame()
 
 			expect(frame.left).toBe(0)
@@ -19,13 +19,15 @@ describe('Group', () => {
 		})
 
 		test('фрейм группы должен охватывать все фигуры', () => {
-			const group = new Group()
+			const group = new Group('group1')
 			const rect1 = new Rectangle(
+				'rect1',
 				new Frame(10, 10, 20, 30),
 				new FillStyle(false, undefined),
 				new LineStyle(false, undefined, 0),
 			)
 			const rect2 = new Rectangle(
+				'rect2',
 				new Frame(50, 40, 30, 20),
 				new FillStyle(false, undefined),
 				new LineStyle(false, undefined, 0),
@@ -42,8 +44,9 @@ describe('Group', () => {
 		})
 
 		test('при изменении фрейма группы фигуры должны масштабироваться пропорционально', () => {
-			const group = new Group()
+			const group = new Group('group1')
 			const rect = new Rectangle(
+				'rect1',
 				new Frame(10, 10, 20, 30),
 				new FillStyle(false, undefined),
 				new LineStyle(false, undefined, 0),
@@ -61,13 +64,15 @@ describe('Group', () => {
 		})
 
 		test('при изменении фрейма группы все фигуры должны масштабироваться и смещаться', () => {
-			const group = new Group()
+			const group = new Group('group1')
 			const rect1 = new Rectangle(
+				'rect1',
 				new Frame(10, 10, 20, 20),
 				new FillStyle(false, undefined),
 				new LineStyle(false, undefined, 0),
 			)
 			const rect2 = new Rectangle(
+				'rect2',
 				new Frame(50, 50, 20, 20),
 				new FillStyle(false, undefined),
 				new LineStyle(false, undefined, 0),
@@ -96,14 +101,16 @@ describe('Group', () => {
 
 	describe('FillStyle', () => {
 		test('если все фигуры имеют одинаковую заливку, группа должна возвращать это значение', () => {
-			const group = new Group()
+			const group = new Group('group1')
 			const color = new RGBA(255, 0, 0, 1)
 			const rect1 = new Rectangle(
+				'rect1',
 				new Frame(0, 0, 10, 10),
 				new FillStyle(true, color),
 				new LineStyle(false, undefined, 0),
 			)
 			const rect2 = new Rectangle(
+				'rect2',
 				new Frame(20, 20, 10, 10),
 				new FillStyle(true, color),
 				new LineStyle(false, undefined, 0),
@@ -119,13 +126,15 @@ describe('Group', () => {
 		})
 
 		test('если фигуры имеют разную заливку, группа должна возвращать undefined для цвета', () => {
-			const group = new Group()
+			const group = new Group('group1')
 			const rect1 = new Rectangle(
+				'rect1',
 				new Frame(0, 0, 10, 10),
 				new FillStyle(true, new RGBA(255, 0, 0, 1)),
 				new LineStyle(false, undefined, 0),
 			)
 			const rect2 = new Rectangle(
+				'rect2',
 				new Frame(20, 20, 10, 10),
 				new FillStyle(true, new RGBA(0, 255, 0, 1)),
 				new LineStyle(false, undefined, 0),
@@ -140,13 +149,15 @@ describe('Group', () => {
 		})
 
 		test('при установке заливки группы все фигуры должны получить новую заливку', () => {
-			const group = new Group()
+			const group = new Group('group1')
 			const rect1 = new Rectangle(
+				'rect1',
 				new Frame(0, 0, 10, 10),
 				new FillStyle(true, new RGBA(255, 0, 0, 1)),
 				new LineStyle(false, undefined, 0),
 			)
 			const rect2 = new Rectangle(
+				'rect2',
 				new Frame(20, 20, 10, 10),
 				new FillStyle(true, new RGBA(0, 255, 0, 1)),
 				new LineStyle(false, undefined, 0),
@@ -164,15 +175,17 @@ describe('Group', () => {
 
 	describe('LineStyle', () => {
 		test('если все фигуры имеют одинаковую обводку, группа должна возвращать это значение', () => {
-			const group = new Group()
+			const group = new Group('group1')
 			const color = new RGBA(0, 0, 255, 1)
 			const width = 2
 			const rect1 = new Rectangle(
+				'rect1',
 				new Frame(0, 0, 10, 10),
 				new FillStyle(false, undefined),
 				new LineStyle(true, color, width),
 			)
 			const rect2 = new Rectangle(
+				'rect2',
 				new Frame(20, 20, 10, 10),
 				new FillStyle(false, undefined),
 				new LineStyle(true, color, width),
@@ -189,13 +202,15 @@ describe('Group', () => {
 		})
 
 		test('если фигуры имеют разную обводку, группа должна возвращать undefined для цвета и 0 для ширины', () => {
-			const group = new Group()
+			const group = new Group('group1')
 			const rect1 = new Rectangle(
+				'rect1',
 				new Frame(0, 0, 10, 10),
 				new FillStyle(false, undefined),
 				new LineStyle(true, new RGBA(255, 0, 0, 1), 2),
 			)
 			const rect2 = new Rectangle(
+				'rect2',
 				new Frame(20, 20, 10, 10),
 				new FillStyle(false, undefined),
 				new LineStyle(true, new RGBA(0, 255, 0, 1), 3),
@@ -211,13 +226,15 @@ describe('Group', () => {
 		})
 
 		test('при установке обводки группы все фигуры должны получить новую обводку', () => {
-			const group = new Group()
+			const group = new Group('group1')
 			const rect1 = new Rectangle(
+				'rect1',
 				new Frame(0, 0, 10, 10),
 				new FillStyle(false, undefined),
 				new LineStyle(true, new RGBA(255, 0, 0, 1), 1),
 			)
 			const rect2 = new Rectangle(
+				'rect2',
 				new Frame(20, 20, 10, 10),
 				new FillStyle(false, undefined),
 				new LineStyle(true, new RGBA(0, 255, 0, 1), 2),
@@ -238,17 +255,19 @@ describe('Group', () => {
 
 	describe('Вложенные группы', () => {
 		test('фрейм группы с вложенной группой должен охватывать все фигуры', () => {
-			const innerGroup = new Group()
+			const innerGroup = new Group('innerGroup')
 			const rect1 = new Rectangle(
+				'rect1',
 				new Frame(10, 10, 20, 20),
 				new FillStyle(false, undefined),
 				new LineStyle(false, undefined, 0),
 			)
 			innerGroup.addShape(rect1)
 
-			const outerGroup = new Group()
+			const outerGroup = new Group('outerGroup')
 			outerGroup.addShape(innerGroup)
 			const rect2 = new Rectangle(
+				'rect2',
 				new Frame(50, 50, 20, 20),
 				new FillStyle(false, undefined),
 				new LineStyle(false, undefined, 0),

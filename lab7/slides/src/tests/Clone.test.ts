@@ -10,6 +10,7 @@ import {RGBA} from '../types/RGBA'
 describe('Clone', () => {
 	test('клонирование Rectangle создает независимую копию', () => {
 		const original = new Rectangle(
+			'rect1',
 			new Frame(10, 20, 30, 40),
 			new FillStyle(true, new RGBA(255, 0, 0, 1)),
 			new LineStyle(true, new RGBA(0, 0, 0, 1), 2),
@@ -32,6 +33,7 @@ describe('Clone', () => {
 
 	test('клонирование Ellipse создает независимую копию', () => {
 		const original = new Ellipse(
+			'ellipse1',
 			new Frame(50, 60, 70, 80),
 			new FillStyle(true, new RGBA(0, 255, 0, 1)),
 			new LineStyle(true, new RGBA(0, 0, 0, 1), 1),
@@ -50,6 +52,7 @@ describe('Clone', () => {
 
 	test('клонирование Triangle создает независимую копию', () => {
 		const original = new Triangle(
+			'triangle1',
 			new Frame(100, 100, 50, 50),
 			new FillStyle(true, new RGBA(0, 0, 255, 1)),
 			new LineStyle(false, undefined, 0),
@@ -66,13 +69,15 @@ describe('Clone', () => {
 	})
 
 	test('клонирование Group создает независимую копию со всеми фигурами', () => {
-		const group = new Group()
+		const group = new Group('group1')
 		const rect = new Rectangle(
+			'rect1',
 			new Frame(10, 10, 20, 20),
 			new FillStyle(true, new RGBA(255, 0, 0, 1)),
 			new LineStyle(true, new RGBA(0, 0, 0, 1), 1),
 		)
 		const ellipse = new Ellipse(
+			'ellipse1',
 			new Frame(50, 50, 30, 30),
 			new FillStyle(true, new RGBA(0, 255, 0, 1)),
 			new LineStyle(false, undefined, 0),
@@ -93,17 +98,19 @@ describe('Clone', () => {
 	})
 
 	test('клонирование вложенной группы создает полную независимую копию', () => {
-		const innerGroup = new Group()
+		const innerGroup = new Group('innerGroup')
 		const rect = new Rectangle(
+			'rect1',
 			new Frame(10, 10, 20, 20),
 			new FillStyle(true, new RGBA(255, 0, 0, 1)),
 			new LineStyle(false, undefined, 0),
 		)
 		innerGroup.addShape(rect)
 
-		const outerGroup = new Group()
+		const outerGroup = new Group('outerGroup')
 		outerGroup.addShape(innerGroup)
 		const ellipse = new Ellipse(
+			'ellipse1',
 			new Frame(50, 50, 30, 30),
 			new FillStyle(true, new RGBA(0, 255, 0, 1)),
 			new LineStyle(false, undefined, 0),
