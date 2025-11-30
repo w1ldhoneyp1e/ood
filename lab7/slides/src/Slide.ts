@@ -4,18 +4,25 @@ import {type IShape} from './shapes/IShape'
 class Slide {
 	private shapes: IShape[] = []
 	private shapeMap = new Map<string, IShape>()
-	private nextId = 1
 
-	addShape(shape: IShape): void {
+	addShape(id: string, shape: IShape): void {
+		if (this.shapeMap.has(id)) {
+			throw new Error(`Фигура с ID "${id}" уже существует`)
+		}
 		this.shapes.push(shape)
-		this.shapeMap.set(shape.getId(), shape)
+		this.shapeMap.set(id, shape)
 	}
 
 	removeShape(shape: IShape): void {
 		const index = this.shapes.indexOf(shape)
 		if (index !== -1) {
 			this.shapes.splice(index, 1)
-			this.shapeMap.delete(shape.getId())
+			for (const [shapeId, shapeValue] of this.shapeMap.entries()) {
+				if (shapeValue === shape) {
+					this.shapeMap.delete(shapeId)
+					break
+				}
+			}
 		}
 	}
 
@@ -27,8 +34,8 @@ class Slide {
 		return this.shapeMap.get(id)
 	}
 
-	generateId(): string {
-		return `shape_${this.nextId++}`
+	getAllShapesWithIds(): [string, IShape][] {
+		return Array.from(this.shapeMap.entries())
 	}
 
 	draw(canvas: ICanvas): void {
