@@ -14,7 +14,8 @@
     "lab5/*",
     "lab6/*",
     "lab7/*",
-    "lab8/*"
+    "lab8/*",
+    "lab9/*"
   ],
   "devDependencies": {
     "@eslint/compat": "^1.2.4",
