@@ -41,6 +41,14 @@ class GumballMachine implements IGumballMachine {
 		this.state.dispense()
 	}
 
+	refill(count: number): void {
+		this.count += count
+		console.log(`Refilled. New count: ${this.count}`)
+		if (this.state === this.soldOutState && this.count > 0) {
+			this.setNoQuarterState()
+		}
+	}
+
 	releaseBall(): void {
 		if (this.count !== 0) {
 			console.log('A gumball comes rolling out the slot...')
