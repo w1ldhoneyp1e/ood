@@ -8,13 +8,7 @@ class HasQuarterState implements IMultiState {
 	}
 
 	insertQuarter(): void {
-		if (this.gumballMachine.getQuarterCount() < 5) {
-			console.log('You inserted a quarter')
-			this.gumballMachine.addQuarter()
-		}
-		else {
-			console.log('You can\'t insert another quarter')
-		}
+		this.gumballMachine.tryAddQuarter()
 	}
 
 	ejectQuarter(): void {

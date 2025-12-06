@@ -62,8 +62,17 @@ class MultiGumballMachine implements IMultiGumballMachine {
 		return this.count
 	}
 
-	addQuarter(): void {
-		this.quarterCount++
+	tryAddQuarter(): boolean {
+		if (this.quarterCount < 5) {
+			console.log('You inserted a quarter')
+			this.quarterCount++
+
+			return true
+		}
+
+		console.log('You can\'t insert another quarter')
+
+		return false
 	}
 
 	getQuarterCount(): number {

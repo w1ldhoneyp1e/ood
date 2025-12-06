@@ -13,7 +13,7 @@ interface IMultiGumballMachine {
 	getBallCount: () => number,
 	addBalls: (count: number) => void,
 
-	addQuarter: () => void,
+	tryAddQuarter: () => boolean,
 	getQuarterCount: () => number,
 	useQuarter: () => void,
 	returnQuarters: () => void,

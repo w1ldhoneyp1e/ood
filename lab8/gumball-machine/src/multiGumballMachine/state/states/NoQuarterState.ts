@@ -8,9 +8,10 @@ class NoQuarterState implements IMultiState {
 	}
 
 	insertQuarter(): void {
-		console.log('You inserted a quarter')
-		this.gumballMachine.addQuarter()
-		this.gumballMachine.setHasQuarterState()
+		const added = this.gumballMachine.tryAddQuarter()
+		if (added) {
+			this.gumballMachine.setHasQuarterState()
+		}
 	}
 
 	ejectQuarter(): void {

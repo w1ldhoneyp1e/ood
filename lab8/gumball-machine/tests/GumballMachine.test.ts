@@ -185,42 +185,56 @@ describe('GumballMachine', () => {
 		})
 	})
 
-	describe('State transitions', () => {
-		test('complete flow: NoQuarter -> HasQuarter -> Sold -> NoQuarter', () => {
-			const machine = new GumballMachine(5)
+	describe('refill in each state', () => {
+		test('refill in NoQuarter adds balls and keeps state', () => {
+			const machine = new GumballMachine(2)
+			consoleSpy.mockClear()
 
+			machine.refill(3)
+
+			expect(machine.getBallCount()).toBe(5)
 			expect(machine.toString()).toContain('waiting for quarter')
+			expect(consoleSpy).toHaveBeenCalledWith('Refilled. New count: 5')
+		})
 
+		test('refill in HasQuarter adds balls and keeps state', () => {
+			const machine = new GumballMachine(2)
 			machine.insertQuarter()
-			expect(machine.toString()).toContain('waiting for turn of crank')
+			consoleSpy.mockClear()
 
-			machine.turnCrank()
-			expect(machine.toString()).toContain('waiting for quarter')
+			machine.refill(2)
+
 			expect(machine.getBallCount()).toBe(4)
-		})
-
-		test('complete flow with ejection: NoQuarter -> HasQuarter -> NoQuarter', () => {
-			const machine = new GumballMachine(5)
-
-			machine.insertQuarter()
 			expect(machine.toString()).toContain('waiting for turn of crank')
-
-			machine.ejectQuarter()
-			expect(machine.toString()).toContain('waiting for quarter')
+			expect(consoleSpy).toHaveBeenCalledWith('Refilled. New count: 4')
 		})
 
-		test('complete flow to sold out: NoQuarter -> HasQuarter -> Sold -> SoldOut', () => {
-			const machine = new GumballMachine(1)
-
+		test('refill in SoldState adds balls and keeps state', () => {
+			const machine = new GumballMachine(2)
 			machine.insertQuarter()
-			machine.turnCrank()
+			machine.setSoldState()
+			consoleSpy.mockClear()
 
-			expect(machine.getBallCount()).toBe(0)
-			expect(machine.toString()).toContain('sold out')
+			machine.refill(3)
+
+			expect(machine.getBallCount()).toBe(5)
+			expect(machine.toString()).toContain('delivering a gumball')
+			expect(consoleSpy).toHaveBeenCalledWith('Refilled. New count: 5')
+		})
+
+		test('refill in SoldOut switches to NoQuarter', () => {
+			const machine = new GumballMachine(0)
+			consoleSpy.mockClear()
+
+			machine.refill(4)
+
+			expect(machine.getBallCount()).toBe(4)
+			expect(machine.toString()).toContain('waiting for quarter')
+			expect(consoleSpy).toHaveBeenCalledWith('Refilled. New count: 4')
 		})
 	})
 
-	describe('Edge cases', () => {
+	describe('multiple operations', () => {
 		test('multiple operations in SoldState should not change state incorrectly', () => {
 			const machine = new GumballMachine(5)
 			machine.insertQuarter()
