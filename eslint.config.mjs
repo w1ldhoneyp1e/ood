@@ -630,6 +630,15 @@ export default [
 				}],
 		},
 	},
+	{
+		files: [
+			'vite.config.ts',
+		],
+		rules: {
+			'import/no-default-export': 'off',
+			'import/prefer-default-export': 'off',
+		},
+	},
 
 	...eslintPluginYml.configs['flat/recommended'],
 	...eslintPluginJsonc.configs['flat/recommended-with-jsonc'],
