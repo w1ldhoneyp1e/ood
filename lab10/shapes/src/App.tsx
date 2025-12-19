@@ -1,6 +1,6 @@
+import {EditorWindow} from './app/editorWindow/EditorWindow'
 import {Document as ModelDocument} from './model/Document'
 import './styles.css'
-import {EditorWindow} from './view/EditorWindow'
 
 function App() {
 	const document = new ModelDocument()
