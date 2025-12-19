@@ -67,28 +67,28 @@ const resizeFrame = (origin: Rect, handle: HANDLES, point: Point, canvasLimits: 
 }
 
 const hitted = (shapes: IShape[], selectionId: string | null, point: Point) => {
-	if (!selectionId) {
-		return
-	}
-	const selected = shapes.find(shape => shape.id === selectionId)
+	if (selectionId) {
+		const selected = shapes.find(shape => shape.id === selectionId)
 
-	if (!selected) {
-		return
-	}
-	const selectedHandle = hitHandle(selected.frame, point)
-
-	if (selectedHandle) {
-		return {
-			id: selected.id,
-			frame: selected.frame,
-			handle: selectedHandle,
+		if (!selected) {
+			return null
 		}
-	}
 
-	if (isOnFrame(selected.frame, point)) {
-		return {
-			id: selected.id,
-			frame: selected.frame,
+		const selectedHandle = hitHandle(selected.frame, point)
+
+		if (selectedHandle) {
+			return {
+				id: selected.id,
+				frame: selected.frame,
+				handle: selectedHandle,
+			}
+		}
+
+		if (isOnFrame(selected.frame, point)) {
+			return {
+				id: selected.id,
+				frame: selected.frame,
+			}
 		}
 	}
 
