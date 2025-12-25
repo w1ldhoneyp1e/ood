@@ -32,7 +32,7 @@ const useEditor = (document: Document): EditorApi => {
 		return () => {
 			unsubscribe()
 		}
-	}, [document, setState])
+	}, [document])
 
 	const setCanvasLimits = useCallback((width: number, height: number) => {
 		setState(prev => ({
@@ -47,37 +47,40 @@ const useEditor = (document: Document): EditorApi => {
 	}, [])
 
 	const addShape = useCallback((type: ShapeType) => {
-		const {canvasLimits} = state
-		const x = Math.max((canvasLimits.width - DEFAULT_SHAPE_WIDTH) / 2, 0)
-		const y = Math.max((canvasLimits.height - DEFAULT_SHAPE_HEIGHT) / 2, 0)
+		setState(prev => {
+			const x = Math.max((prev.canvasLimits.width - DEFAULT_SHAPE_WIDTH) / 2, 0)
+			const y = Math.max((prev.canvasLimits.height - DEFAULT_SHAPE_HEIGHT) / 2, 0)
 
-		document.addShape(type, {
-			x,
-			y,
-			width: DEFAULT_SHAPE_WIDTH,
-			height: DEFAULT_SHAPE_HEIGHT,
+			document.addShape(type, {
+				x,
+				y,
+				width: DEFAULT_SHAPE_WIDTH,
+				height: DEFAULT_SHAPE_HEIGHT,
+			})
+
+			return {
+				...prev,
+				selectedId: null,
+				dragState: {mode: 'none'},
+			}
 		})
-		setState(prev => ({
-			...prev,
-			selectedId: null,
-			dragState: {mode: 'none'},
-			shapes: document.getSnapshot(),
-		}))
-	}, [state.canvasLimits, document])
+	}, [document])
 
 	const deleteSelection = useCallback(() => {
-		if (!state.selectedId) {
-			return
-		}
+		setState(prev => {
+			if (!prev.selectedId) {
+				return prev
+			}
 
-		document.removeShape(state.selectedId)
-		setState(prev => ({
-			...prev,
-			selectedId: null,
-			dragState: {mode: 'none'},
-			shapes: document.getSnapshot(),
-		}))
-	}, [state.selectedId, document])
+			document.removeShape(prev.selectedId)
+
+			return {
+				...prev,
+				selectedId: null,
+				dragState: {mode: 'none'},
+			}
+		})
+	}, [document])
 
 	const clearSelection = useCallback(() => {
 		setState(prev => ({

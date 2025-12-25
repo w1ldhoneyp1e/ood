@@ -1,4 +1,5 @@
 import {type EditorState} from '../viewmodel/useEditor'
+import {Canvas2D} from './canvas/Canvas2D'
 import {drawSelection} from './selection'
 
 const drawShapes = (offscreen: HTMLCanvasElement, view: EditorState) => {
@@ -9,33 +10,11 @@ const drawShapes = (offscreen: HTMLCanvasElement, view: EditorState) => {
 	}
 
 	ctx.clearRect(0, 0, offscreen.width, offscreen.height)
-	view.shapes.forEach(shape => {
-		ctx.fillStyle = shape.fill
 
-		if (shape.type === 'rectangle') {
-			ctx.fillRect(shape.frame.x, shape.frame.y, shape.frame.width, shape.frame.height)
-		}
-		else if (shape.type === 'ellipse') {
-			ctx.beginPath()
-			ctx.ellipse(
-				shape.frame.x + shape.frame.width / 2,
-				shape.frame.y + shape.frame.height / 2,
-				shape.frame.width / 2,
-				shape.frame.height / 2,
-				0,
-				0,
-				Math.PI * 2,
-			)
-			ctx.fill()
-		}
-		else {
-			ctx.beginPath()
-			ctx.moveTo(shape.frame.x + shape.frame.width / 2, shape.frame.y)
-			ctx.lineTo(shape.frame.x + shape.frame.width, shape.frame.y + shape.frame.height)
-			ctx.lineTo(shape.frame.x, shape.frame.y + shape.frame.height)
-			ctx.closePath()
-			ctx.fill()
-		}
+	const canvas = new Canvas2D(ctx)
+
+	view.shapes.forEach(shape => {
+		shape.draw.draw(shape, canvas)
 	})
 }
 

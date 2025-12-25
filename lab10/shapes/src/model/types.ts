@@ -1,3 +1,5 @@
+import {type IDrawStrategy} from './draw/IDrawStrategy'
+
 interface Point {
 	x: number,
 	y: number,
@@ -17,6 +19,7 @@ interface IShape {
 	type: ShapeType,
 	frame: Rect,
 	fill: string,
+	draw: IDrawStrategy,
 }
 
 export type {

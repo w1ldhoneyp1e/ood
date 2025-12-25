@@ -1,9 +1,10 @@
+import {useMemo} from 'react'
 import {EditorWindow} from './app/editorWindow/EditorWindow'
 import {Document as ModelDocument} from './model/Document'
 import './styles.css'
 
 function App() {
-	const document = new ModelDocument()
+	const document = useMemo(() => new ModelDocument(), [])
 
 	return (
 		<div className="app">

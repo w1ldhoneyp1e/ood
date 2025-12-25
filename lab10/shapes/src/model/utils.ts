@@ -1,4 +1,4 @@
-import {type IShape, type Rect} from './types'
+import {type Rect} from './types'
 
 const clamp = (value: number, min: number, max: number) => {
 	if (value < min) {
@@ -37,12 +37,6 @@ const normalizeSize = (value: number, min: number) => {
 	return value
 }
 
-const cloneShape = (shape: IShape): IShape => ({
-	id: shape.id,
-	type: shape.type,
-	fill: shape.fill,
-	frame: {...shape.frame},
-})
 
 const shapePalette = [
 	'#8ecae6', // yellow
@@ -60,7 +54,6 @@ export {
 	normalizeSize,
 	rectCenter,
 	translateRect,
-	cloneShape,
 	shapePalette,
 	colorByIndex,
 }

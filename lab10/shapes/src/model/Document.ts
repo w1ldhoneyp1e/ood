@@ -1,3 +1,4 @@
+import {getDrawStrategy} from './draw/getDrawStrategy'
 import {
 	type IShape,
 	type Rect,
@@ -5,7 +6,6 @@ import {
 } from './types'
 import {
 	clamp,
-	cloneShape,
 	colorByIndex,
 	normalizeSize,
 } from './utils'
@@ -26,7 +26,17 @@ class Document {
 	}
 
 	getSnapshot() {
-		return this.shapes.map(shape => cloneShape(shape))
+		return this.shapes.map(shape => this.cloneShape(shape))
+	}
+
+	private cloneShape(shape: IShape): IShape {
+		return {
+			id: shape.id,
+			type: shape.type,
+			fill: shape.fill,
+			frame: {...shape.frame},
+			draw: shape.draw,
+		}
 	}
 
 	addShape(type: ShapeType, frame: Rect) {
@@ -40,6 +50,7 @@ class Document {
 				width: frame.width,
 				height: frame.height,
 			},
+			draw: getDrawStrategy(type),
 		}
 
 		this.counter += 1
@@ -109,7 +120,9 @@ class Document {
 	}
 
 	private notify() {
-		this.listeners.forEach(listener => listener())
+		queueMicrotask(() => {
+			this.listeners.forEach(listener => listener())
+		})
 	}
 }
 

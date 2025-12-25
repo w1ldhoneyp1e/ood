@@ -72,7 +72,10 @@ function CanvasView({
 		canvas.height = height
 		overlay.width = width
 		overlay.height = height
-		setCanvasLimits(width, height)
+
+		if (changed) {
+			setCanvasLimits(width, height)
+		}
 
 		if (!offscreenRef.current) {
 			offscreenRef.current = document.createElement('canvas')
