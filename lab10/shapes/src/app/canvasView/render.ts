@@ -14,7 +14,7 @@ const drawShapes = (offscreen: HTMLCanvasElement, view: EditorState) => {
 	const canvas = new Canvas2D(ctx)
 
 	view.shapes.forEach(shape => {
-		shape.draw.draw(shape, canvas)
+		shape.draw(shape, canvas)
 	})
 }
 

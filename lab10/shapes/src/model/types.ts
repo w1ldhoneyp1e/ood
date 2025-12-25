@@ -1,5 +1,5 @@
-import {type IDrawStrategy} from './draw/IDrawStrategy'
 import {type IHitTestStrategy} from './hitTest/IHitTestStrategy'
+import {type ICanvas} from './ICanvas'
 
 interface Point {
 	x: number,
@@ -20,7 +20,7 @@ interface IShape {
 	type: ShapeType,
 	frame: Rect,
 	fill: string,
-	draw: IDrawStrategy,
+	draw: (shape: IShape, canvas: ICanvas) => void,
 	hitTest: IHitTestStrategy,
 	clone: () => IShape,
 }

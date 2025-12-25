@@ -1,19 +1,19 @@
-import {type ShapeType} from '../types'
+import {type ICanvas} from '../ICanvas'
+import {type IShape, type ShapeType} from '../types'
 import {ellipseDrawStrategy} from './ellipse/EllipseDrawStrategy'
-import {type IDrawStrategy} from './IDrawStrategy'
 import {rectangleDrawStrategy} from './rectangle/RectangleDrawStrategy'
 import {triangleDrawStrategy} from './triangle/TriangleDrawStrategy'
 
-const getDrawStrategy = (type: ShapeType): IDrawStrategy => {
+const getDrawStrategy = (type: ShapeType): (shape: IShape, canvas: ICanvas) => void => {
 	if (type === 'rectangle') {
-		return rectangleDrawStrategy
+		return (shape, canvas) => rectangleDrawStrategy.draw(shape, canvas)
 	}
 
 	if (type === 'ellipse') {
-		return ellipseDrawStrategy
+		return (shape, canvas) => ellipseDrawStrategy.draw(shape, canvas)
 	}
 
-	return triangleDrawStrategy
+	return (shape, canvas) => triangleDrawStrategy.draw(shape, canvas)
 }
 
 export {
