@@ -47,24 +47,22 @@ const useEditor = (document: Document): EditorApi => {
 	}, [])
 
 	const addShape = useCallback((type: ShapeType) => {
-		setState(prev => {
-			const x = Math.max((prev.canvasLimits.width - DEFAULT_SHAPE_WIDTH) / 2, 0)
-			const y = Math.max((prev.canvasLimits.height - DEFAULT_SHAPE_HEIGHT) / 2, 0)
+		const x = Math.max((state.canvasLimits.width - DEFAULT_SHAPE_WIDTH) / 2, 0)
+		const y = Math.max((state.canvasLimits.height - DEFAULT_SHAPE_HEIGHT) / 2, 0)
 
-			document.addShape(type, {
-				x,
-				y,
-				width: DEFAULT_SHAPE_WIDTH,
-				height: DEFAULT_SHAPE_HEIGHT,
-			})
-
-			return {
-				...prev,
-				selectedId: null,
-				dragState: {mode: 'none'},
-			}
+		document.addShape(type, {
+			x,
+			y,
+			width: DEFAULT_SHAPE_WIDTH,
+			height: DEFAULT_SHAPE_HEIGHT,
 		})
-	}, [document])
+
+		setState(prev => ({
+			...prev,
+			selectedId: null,
+			dragState: {mode: 'none'},
+		}))
+	}, [document, state.canvasLimits])
 
 	const deleteSelection = useCallback(() => {
 		setState(prev => {
