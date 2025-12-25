@@ -20,6 +20,7 @@ interface IShape {
 	frame: Rect,
 	fill: string,
 	draw: IDrawStrategy,
+	clone: () => IShape,
 }
 
 export type {

@@ -26,17 +26,7 @@ class Document {
 	}
 
 	getSnapshot() {
-		return this.shapes.map(shape => this.cloneShape(shape))
-	}
-
-	private cloneShape(shape: IShape): IShape {
-		return {
-			id: shape.id,
-			type: shape.type,
-			fill: shape.fill,
-			frame: {...shape.frame},
-			draw: shape.draw,
-		}
+		return this.shapes.map(shape => shape.clone())
 	}
 
 	addShape(type: ShapeType, frame: Rect) {
@@ -51,6 +41,14 @@ class Document {
 				height: frame.height,
 			},
 			draw: getDrawStrategy(type),
+			clone: () => ({
+				id: shape.id,
+				type: shape.type,
+				fill: shape.fill,
+				frame: {...shape.frame},
+				draw: shape.draw,
+				clone: shape.clone,
+			}),
 		}
 
 		this.counter += 1
