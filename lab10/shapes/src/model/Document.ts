@@ -1,15 +1,14 @@
-import {getDrawStrategy} from './draw/getDrawStrategy'
-import {getHitTestStrategy} from './hitTest/getHitTestStrategy'
+import {AddShapeCommand} from './command/AddShapeCommand'
+import {CommandHistory} from './command/CommandHistory'
+import {MoveShapeCommand} from './command/MoveShapeCommand'
+import {RemoveShapeCommand} from './command/RemoveShapeCommand'
+import {SetFrameCommand} from './command/SetFrameCommand'
 import {
 	type IShape,
 	type Rect,
 	type ShapeType,
 } from './types'
-import {
-	clamp,
-	colorByIndex,
-	normalizeSize,
-} from './utils'
+import {clamp, normalizeSize} from './utils'
 
 type DocumentListener = () => void
 
@@ -19,6 +18,8 @@ class Document {
 	private listeners = new Set<DocumentListener>()
 
 	private counter = 1
+
+	private history = new CommandHistory()
 
 	subscribe(listener: DocumentListener) {
 		this.listeners.add(listener)
@@ -31,50 +32,39 @@ class Document {
 	}
 
 	addShape(type: ShapeType, frame: Rect) {
-		const shape: IShape = {
-			id: `shape-${this.counter}`,
+		const command = new AddShapeCommand({
+			shapes: this.shapes,
+			counter: this.counter,
 			type,
-			fill: colorByIndex(this.counter),
-			frame: {
-				x: frame.x,
-				y: frame.y,
-				width: frame.width,
-				height: frame.height,
-			},
-			draw: getDrawStrategy(type),
-			hitTest: getHitTestStrategy(type),
-			clone: () => ({
-				id: shape.id,
-				type: shape.type,
-				fill: shape.fill,
-				frame: {...shape.frame},
-				draw: shape.draw,
-				hitTest: shape.hitTest,
-				clone: shape.clone,
-			}),
-		}
+			frame,
+			onNotify: () => this.notify(),
+		})
 
 		this.counter += 1
-		this.shapes.push(shape)
-		this.notify()
+		this.history.execute(command)
 
-		return shape.id
+		return command.getShapeId() ?? ''
 	}
 
 	removeShape(id: string) {
-		const nextShapes = this.shapes.filter(shape => shape.id !== id)
+		const shape = this.shapes.find(s => s.id === id)
 
-		if (nextShapes.length === this.shapes.length) {
+		if (!shape) {
 			return false
 		}
 
-		this.shapes = nextShapes
-		this.notify()
+		const command = new RemoveShapeCommand(
+			this.shapes,
+			id,
+			() => this.notify(),
+		)
+
+		this.history.execute(command)
 
 		return true
 	}
 
-	setFrame(id: string, frame: Rect) {
+	setFrame(id: string, frame: Rect, createCommand: boolean = false, startFrame?: Rect) {
 		const shape = this.shapes.find(item => item.id === id)
 
 		if (!shape) {
@@ -83,15 +73,32 @@ class Document {
 
 		const width = normalizeSize(frame.width, 10)
 		const height = normalizeSize(frame.height, 10)
-		const x = frame.x
-		const y = frame.y
+
+		if (createCommand && startFrame) {
+			const command = new SetFrameCommand(
+				shape,
+				{
+					x: frame.x,
+					y: frame.y,
+					width,
+					height,
+				},
+				startFrame,
+				() => this.notify(),
+			)
+
+			this.history.execute(command)
+
+			return true
+		}
 
 		shape.frame = {
-			x,
-			y,
+			x: frame.x,
+			y: frame.y,
 			width,
 			height,
 		}
+
 		this.notify()
 
 		return true
@@ -115,9 +122,47 @@ class Document {
 			width,
 			height,
 		}
+
 		this.notify()
 
 		return true
+	}
+
+	moveShapeWithCommand(id: string, limits: Rect, startFrame: Rect) {
+		const shape = this.shapes.find(item => item.id === id)
+
+		if (!shape) {
+			return false
+		}
+
+		const command = new MoveShapeCommand({
+			shape,
+			x: shape.frame.x,
+			y: shape.frame.y,
+			limits,
+			startFrame,
+			onNotify: () => this.notify(),
+		})
+
+		this.history.execute(command)
+
+		return true
+	}
+
+	undo(): string | null {
+		return this.history.undo()
+	}
+
+	redo(): string | null {
+		return this.history.redo()
+	}
+
+	canUndo(): boolean {
+		return this.history.canUndo()
+	}
+
+	canRedo(): boolean {
+		return this.history.canRedo()
 	}
 
 	private notify() {

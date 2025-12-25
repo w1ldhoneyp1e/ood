@@ -10,8 +10,9 @@ import {
 	DEFAULT_SHAPE_HEIGHT,
 	DEFAULT_SHAPE_WIDTH,
 } from '../const'
+import {getDragHandler} from './drag/getDragHandler'
 import {type EditorApi, type EditorState} from './types'
-import {hitted, resizeFrame} from './utils'
+import {hitted} from './utils'
 
 const useEditor = (document: Document): EditorApi => {
 	const [state, setState] = useState<EditorState>({
@@ -124,6 +125,7 @@ const useEditor = (document: Document): EditorApi => {
 					x: point.x - hit.frame.x,
 					y: point.y - hit.frame.y,
 				},
+				origin: {...hit.frame},
 			},
 		}))
 	}, [state.shapes, state.selectedId])
@@ -135,38 +137,70 @@ const useEditor = (document: Document): EditorApi => {
 			canvasLimits,
 		} = state
 
-		if (dragState.mode === 'none' || !selectedId) {
+		if (!selectedId) {
 			return
 		}
 
-		if (dragState.mode === 'move') {
-			if (!dragState.offset) {
-				return
-			}
+		const handler = getDragHandler(dragState.mode)
 
-			const nextX = point.x - dragState.offset.x
-			const nextY = point.y - dragState.offset.y
-			document.moveShape(selectedId, nextX, nextY, canvasLimits)
-
-			return
-		}
-
-		if (dragState.mode === 'resize') {
-			if (!dragState.origin || !dragState.handle) {
-				return
-			}
-
-			const frame = resizeFrame(dragState.origin, dragState.handle, point, canvasLimits)
-			document.setFrame(selectedId, frame)
-		}
-	}, [document, state.canvasLimits, state.dragState, state.selectedId])
+		handler.handleMove({
+			document,
+			selectedId,
+			dragState,
+			canvasLimits,
+			shapes: state.shapes,
+		}, point)
+	}, [document, state])
 
 	const mouseUp = useCallback(() => {
+		const {
+			dragState,
+			selectedId,
+			canvasLimits,
+		} = state
+
+		if (!selectedId || !dragState.origin) {
+			setState(prev => ({
+				...prev,
+				dragState: {mode: 'none'},
+			}))
+
+			return
+		}
+
+		const handler = getDragHandler(dragState.mode)
+
+		handler.handleUp({
+			document,
+			selectedId,
+			dragState,
+			canvasLimits,
+			shapes: state.shapes,
+		})
+
 		setState(prev => ({
 			...prev,
 			dragState: {mode: 'none'},
 		}))
+	}, [document, state])
+
+	const updateSelectionAfterCommand = useCallback((affectedId: string | null) => {
+		setState(prev => ({
+			...prev,
+			selectedId: affectedId,
+			dragState: {mode: 'none'},
+		}))
 	}, [])
+
+	const undo = useCallback(() => {
+		const affectedId = document.undo()
+		updateSelectionAfterCommand(affectedId)
+	}, [document, updateSelectionAfterCommand])
+
+	const redo = useCallback(() => {
+		const affectedId = document.redo()
+		updateSelectionAfterCommand(affectedId)
+	}, [document, updateSelectionAfterCommand])
 
 	return {
 		state,
@@ -174,6 +208,10 @@ const useEditor = (document: Document): EditorApi => {
 		addShape,
 		deleteSelection,
 		clearSelection,
+		undo,
+		redo,
+		canUndo: () => document.canUndo(),
+		canRedo: () => document.canRedo(),
 		mouseDown,
 		mouseMove,
 		mouseUp,
