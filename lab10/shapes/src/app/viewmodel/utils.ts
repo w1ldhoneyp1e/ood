@@ -95,7 +95,7 @@ const hitted = (shapes: IShape[], selectionId: string | null, point: Point) => {
 	for (let index = shapes.length - 1; index >= 0; index -= 1) {
 		const shape = shapes[index]
 
-		if (isPointInsideShape(shape, point)) {
+		if (shape.hitTest.isPointInside(shape.frame, point)) {
 			return {
 				id: shape.id,
 				frame: shape.frame,
@@ -181,71 +181,10 @@ const isOnFrame = (frame: Rect, point: Point) => {
 	return insideX && insideY
 }
 
-const triangleArea = (a: Point, b: Point, c: Point) => {
-	const area = (a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y)) / 2
-
-	return Math.abs(area)
-}
-
-const isInsideRect = (frame: Rect, point: Point) => {
-	const insideX = point.x >= frame.x && point.x <= frame.x + frame.width
-	const insideY = point.y >= frame.y && point.y <= frame.y + frame.height
-
-	return insideX && insideY
-}
-
-const isInsideEllipse = (frame: Rect, point: Point) => {
-	const centerX = frame.x + frame.width / 2
-	const centerY = frame.y + frame.height / 2
-	const normX = (point.x - centerX) / (frame.width / 2)
-	const normY = (point.y - centerY) / (frame.height / 2)
-
-	return normX * normX + normY * normY <= 1
-}
-
-const isInsideTriangle = (frame: Rect, point: Point) => {
-	const p1 = {
-		x: frame.x + frame.width / 2,
-		y: frame.y,
-	}
-	const p2 = {
-		x: frame.x + frame.width,
-		y: frame.y + frame.height,
-	}
-	const p3 = {
-		x: frame.x,
-		y: frame.y + frame.height,
-	}
-	const area = triangleArea(p1, p2, p3)
-	const area1 = triangleArea(point, p2, p3)
-	const area2 = triangleArea(p1, point, p3)
-	const area3 = triangleArea(p1, p2, point)
-	const total = area1 + area2 + area3
-
-	return Math.abs(total - area) < 0.5
-}
-
-const isPointInsideShape = (shape: IShape, point: Point) => {
-	if (shape.type === 'rectangle') {
-		return isInsideRect(shape.frame, point)
-	}
-
-	if (shape.type === 'ellipse') {
-		return isInsideEllipse(shape.frame, point)
-	}
-
-	return isInsideTriangle(shape.frame, point)
-}
-
 export {
 	resizeFrame,
 	hitted,
 	hitHandle,
 	getHandles,
 	isOnFrame,
-	triangleArea,
-	isInsideRect,
-	isInsideEllipse,
-	isInsideTriangle,
-	isPointInsideShape,
 }

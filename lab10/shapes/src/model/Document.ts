@@ -1,4 +1,5 @@
 import {getDrawStrategy} from './draw/getDrawStrategy'
+import {getHitTestStrategy} from './hitTest/getHitTestStrategy'
 import {
 	type IShape,
 	type Rect,
@@ -41,12 +42,14 @@ class Document {
 				height: frame.height,
 			},
 			draw: getDrawStrategy(type),
+			hitTest: getHitTestStrategy(type),
 			clone: () => ({
 				id: shape.id,
 				type: shape.type,
 				fill: shape.fill,
 				frame: {...shape.frame},
 				draw: shape.draw,
+				hitTest: shape.hitTest,
 				clone: shape.clone,
 			}),
 		}
